@@ -861,3 +861,149 @@ export async function getDogProfile(): Promise<DogProfile> {
   await fakeDelay();
   return mockDogProfile;
 }
+
+// ---------- Veckans övning ----------
+
+export type WeeklyExercise = {
+  id: string;
+  title: string;
+  videoLengthSec: number;
+  difficulty: "lätt" | "medel" | "utmanande";
+  targetSkill: string;
+  weekLabel: string; // t.ex. "Vecka 16"
+  buildsOn: string; // "Söket i rörelse, pass 4"
+  steps: string[];
+  whyItMatters: string;
+  doneThisWeek: boolean;
+};
+
+export const mockWeeklyExercise: WeeklyExercise = {
+  id: "we-16",
+  title: "Söket i rörelse",
+  videoLengthSec: 92,
+  difficulty: "medel",
+  targetSkill: "Nosework · fokus i rörelse",
+  weekLabel: "Vecka 16",
+  buildsOn: "Pass 4 · Två rum, en doft",
+  steps: [
+    "Placera tre burkar i rad, en meter emellan.",
+    "Gå långsamt förbi. Luna söker utan att ni stannar.",
+    "Markera med ett mjukt ja i samma sekund hon träffar rätt.",
+    "Tre omgångar, sedan paus. Klart på 90 sekunder.",
+  ],
+  whyItMatters:
+    "Nästa pass har tidspress. Det här är förberedelsen. Luna lär sig att tankearbete kan ske i rörelse, inte bara när ni står still.",
+  doneThisWeek: false,
+};
+
+export async function getWeeklyExercise(): Promise<WeeklyExercise> {
+  await fakeDelay();
+  return mockWeeklyExercise;
+}
+
+// ---------- Notiser ----------
+
+export type NotificationItem = {
+  id: string;
+  type: "påminnelse" | "nytt-pass" | "milstolpe" | "meddelande";
+  title: string;
+  body: string;
+  ago: string; // "2 min", "3 tim", "igår"
+  read: boolean;
+  href?: string;
+};
+
+export const mockNotifications: NotificationItem[] = [
+  {
+    id: "n-1",
+    type: "påminnelse",
+    title: "Imorgon 18:00 · Tidspress",
+    body: "Pass 5 av 8 i SnifferQuest. Anna har förberett något nytt.",
+    ago: "10 min",
+    read: false,
+    href: "/mina-bokningar",
+  },
+  {
+    id: "n-2",
+    type: "milstolpe",
+    title: "Luna klarade pass 4",
+    body: "Två rum, en doft. Ni har 4 av 8 pass avklarade i säsongen.",
+    ago: "2 tim",
+    read: false,
+    href: "/min-resa",
+  },
+  {
+    id: "n-3",
+    type: "nytt-pass",
+    title: "Nytt pass: Hoopers i Uppsala",
+    body: "Camilla lägger till ett skonsamt agilitypass på fredag.",
+    ago: "igår",
+    read: true,
+    href: "/boka",
+  },
+  {
+    id: "n-4",
+    type: "meddelande",
+    title: "Anna har skickat en hälsning",
+    body: "Bra jobbat igår. Tog med mig en ny idé till nästa pass.",
+    ago: "2 dagar",
+    read: true,
+  },
+  {
+    id: "n-5",
+    type: "påminnelse",
+    title: "Veckans övning ligger uppe",
+    body: "90 sekunder hemmaläxa. Ni gör den när ni vill under veckan.",
+    ago: "3 dagar",
+    read: true,
+    href: "/veckans-ovning",
+  },
+];
+
+export async function getNotifications(): Promise<NotificationItem[]> {
+  await fakeDelay();
+  return mockNotifications;
+}
+
+// ---------- Vaccinationsintyg ----------
+
+export type VaccinationRecord = {
+  id: string;
+  name: string; // "Valpsjuka, hepatit, parvo (DHP)"
+  short: string; // "DHP"
+  lastGiven: string; // ISO
+  validUntil: string; // ISO
+  status: "gäller" | "förnyelse-snart" | "utgången";
+};
+
+export const mockVaccinations: VaccinationRecord[] = [
+  {
+    id: "v-1",
+    name: "Valpsjuka, hepatit, parvovirus",
+    short: "DHP",
+    lastGiven: "2024-03-15T00:00:00",
+    validUntil: "2027-03-15T00:00:00",
+    status: "gäller",
+  },
+  {
+    id: "v-2",
+    name: "Kennelhosta",
+    short: "Bb + Pi",
+    lastGiven: "2025-03-20T00:00:00",
+    validUntil: "2026-05-20T00:00:00",
+    status: "förnyelse-snart",
+  },
+  {
+    id: "v-3",
+    name: "Rabies",
+    short: "Rabies",
+    lastGiven: "2024-06-02T00:00:00",
+    validUntil: "2027-06-02T00:00:00",
+    status: "gäller",
+  },
+];
+
+export async function getVaccinations(): Promise<VaccinationRecord[]> {
+  await fakeDelay();
+  return mockVaccinations;
+}
