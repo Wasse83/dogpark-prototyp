@@ -5,10 +5,8 @@ import "./globals.css";
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-display",
-  // Next.js 15 tilll\u00e5ter inte `axes` samtidigt som explicit weight-array.
-  // Vi k\u00f6r variabel-weight ist\u00e4llet, vilket ger fullt spann och l\u00e5ter oss
-  // beh\u00e5lla SOFT optical size som designsystemet beg\u00e4r.
-  weight: "variable",
+  // För variabla typsnitt med custom-axlar måste `weight` utelämnas helt.
+  // Next.js hämtar då full variabel-range och axlarna (opsz + SOFT) funkar.
   axes: ["opsz", "SOFT"],
   display: "swap",
 });
