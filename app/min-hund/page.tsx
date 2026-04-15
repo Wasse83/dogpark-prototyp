@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { PhotoThumb } from "@/components/PhotoThumb";
 import { getDogProfile } from "@/lib/mock-data";
 
 /**
@@ -61,11 +62,14 @@ export default async function MinHundPage() {
 
           {/* Avatar + namn */}
           <div className="flex flex-col items-center text-center mb-6">
-            <div
-              className="w-24 h-24 rounded-full bg-rose-500 flex items-center justify-center text-bone-50 font-bold text-4xl mb-3 animate-breathe"
-              aria-label={`Avatar för ${dog.name}`}
-            >
-              {dog.name[0]}
+            <div className="mb-3 animate-breathe">
+              <PhotoThumb
+                src={dog.photoUrl}
+                alt={`Foto av ${dog.name}`}
+                size={96}
+                rounded="full"
+                variant="dog"
+              />
             </div>
             <h1 className="font-display text-[30px] leading-[1.1]">
               {dog.name}
