@@ -42,9 +42,25 @@ export type Instructor = {
 export type Park = {
   id: string;
   name: string;
+  city: string;
   address: string;
   distanceKm: number;
+  sizeSqm: number;
+  openedYear: number;
+  zones: string[];
+  instructors: number;
+  tagline: string;
   facilities: string[];
+};
+
+export type MembershipTier = {
+  id: "bas" | "plus" | "premium";
+  name: string;
+  tagline: string;
+  pricePerMonth: number; // månadsvis plan
+  pricePerMonthAnnual: number; // årsplan delat på 12
+  features: string[];
+  highlight?: boolean;
 };
 
 export type Program = {
@@ -121,10 +137,115 @@ export const mockInstructor: Instructor = {
 export const mockPark: Park = {
   id: "park-uppsala",
   name: "Dogpark Uppsala",
-  address: "Boländerna 14, 753 23 Uppsala",
+  city: "Uppsala",
+  address: "Årsta, Uppsala",
   distanceKm: 2.1,
-  facilities: ["Hundgym", "Agility", "Vatten + dusch", "5 inhägnader"],
+  sizeSqm: 6000,
+  openedYear: 2024,
+  zones: ["Stora hundparken", "Parken Greta", "Hundgymmet", "Parken Zenna"],
+  instructors: 3,
+  tagline: "Modern park i Årsta, nära centrum",
+  facilities: ["Hundgym", "Privatpark bokningsbar", "Vardagsrum", "Lillevilla shop"],
 };
+
+export const mockParks: Park[] = [
+  {
+    id: "park-uddevalla",
+    name: "Dogpark Uddevalla",
+    city: "Uddevalla",
+    address: "Helenedalsvägen, Uddevalla",
+    distanceKm: 312,
+    sizeSqm: 10000,
+    openedYear: 2021,
+    zones: [
+      "Stora hundparken",
+      "Parken Greta",
+      "Hundgymmet",
+      "Parken Zenna",
+      "Vardagsrum",
+    ],
+    instructors: 4,
+    tagline: "Flaggskeppet, 10 000 kvm vid Bjursjön",
+    facilities: ["Stora tältet", "Hundgym", "Privatpark", "Shop", "Lånehörna"],
+  },
+  {
+    id: "park-uppsala",
+    name: "Dogpark Uppsala",
+    city: "Uppsala",
+    address: "Årsta, Uppsala",
+    distanceKm: 2.1,
+    sizeSqm: 6000,
+    openedYear: 2024,
+    zones: ["Stora hundparken", "Parken Greta", "Hundgymmet", "Parken Zenna"],
+    instructors: 3,
+    tagline: "Modern park i Årsta, nära centrum",
+    facilities: [
+      "Hundgym",
+      "Privatpark",
+      "Gratis tandvård för PREMIUM",
+      "Vardagsrum",
+    ],
+  },
+  {
+    id: "park-vasteras",
+    name: "Dogpark Västerås",
+    city: "Västerås",
+    address: "Västerås",
+    distanceKm: 95,
+    sizeSqm: 5500,
+    openedYear: 2025,
+    zones: ["Stora hundparken", "Parken Greta", "Hundgymmet"],
+    instructors: 2,
+    tagline: "Nyöppnad, bygger upp gruppträningsschema",
+    facilities: ["Hundgym", "Vardagsrum", "Shop"],
+  },
+];
+
+export const mockMembershipTiers: MembershipTier[] = [
+  {
+    id: "bas",
+    name: "BAS",
+    tagline: "För er som mest vill springa av er",
+    pricePerMonth: 349,
+    pricePerMonthAnnual: 319,
+    features: [
+      "Tillgång till parken dygnet runt, året om",
+      "Digital nyckel i appen",
+      "Stora hundparken och Parken Greta",
+      "Vardagsrum vid entré",
+      "Lånehörnan för leksaker",
+    ],
+  },
+  {
+    id: "plus",
+    name: "PLUS",
+    tagline: "För er som vill träna också",
+    pricePerMonth: 549,
+    pricePerMonthAnnual: 499,
+    features: [
+      "Allt i BAS",
+      "Tillgång till Hundgymmet",
+      "Bokning av Parken Zenna (privat)",
+      "Rabatt på hundkurser",
+      "10 kr tandvård (gäller Uppsala)",
+    ],
+  },
+  {
+    id: "premium",
+    name: "PREMIUM",
+    tagline: "Hela Dogpark, utan bromsklossar",
+    pricePerMonth: 849,
+    pricePerMonthAnnual: 769,
+    features: [
+      "Allt i PLUS",
+      "Alla gruppträningar ingår",
+      "Gratis tandvård (Uppsala)",
+      "Förtur till bokningar",
+      "Extra rabatt på kurser och shop",
+    ],
+    highlight: true,
+  },
+];
 
 export const mockJourney: JourneyState = {
   dogId: "dog-1",
@@ -198,4 +319,14 @@ export async function getRecommendedProgram(): Promise<Program> {
 export async function getMilestones(): Promise<Milestone[]> {
   await fakeDelay();
   return mockMilestones;
+}
+
+export async function getParks(): Promise<Park[]> {
+  await fakeDelay();
+  return mockParks;
+}
+
+export async function getMembershipTiers(): Promise<MembershipTier[]> {
+  await fakeDelay();
+  return mockMembershipTiers;
 }

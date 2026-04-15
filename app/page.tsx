@@ -152,14 +152,34 @@ export default async function HomePage() {
       </PhoneFrame>
 
       {/* Demo-länkar utanför phone */}
-      <div className="text-center text-sm text-text-muted">
-        <p className="mb-2">Testa flödena:</p>
-        <Link
-          href="/onboarding"
-          className="text-sage-600 font-semibold underline"
-        >
-          Gå till onboarding-flödet
-        </Link>
+      <div className="text-center text-sm text-text-muted max-w-[375px]">
+        <p className="mb-3 font-semibold">Testa flödena:</p>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+          <Link
+            href="/onboarding"
+            className="text-sage-600 font-semibold hover:underline"
+          >
+            Onboarding
+          </Link>
+          <Link
+            href="/valj-park"
+            className="text-sage-600 font-semibold hover:underline"
+          >
+            Välj park
+          </Link>
+          <Link
+            href="/bli-medlem"
+            className="text-sage-600 font-semibold hover:underline"
+          >
+            Bli medlem
+          </Link>
+          <Link
+            href="/denna-finns-inte"
+            className="text-rose-700 font-semibold hover:underline"
+          >
+            Testa 404
+          </Link>
+        </div>
       </div>
     </div>
   );
