@@ -70,7 +70,8 @@ export default function BokaPage() {
             >
               <Icon.ArrowLeft size={18} />
             </Link>
-            <button
+            <Link
+              href="/sok"
               aria-label="Sök"
               className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors"
             >
@@ -78,7 +79,7 @@ export default function BokaPage() {
                 <circle cx={11} cy={11} r={8} />
                 <path d="M21 21l-4.3-4.3" />
               </svg>
-            </button>
+            </Link>
           </div>
 
           {/* Hero */}

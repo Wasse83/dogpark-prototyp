@@ -38,7 +38,8 @@ export default async function MinHundPage() {
             >
               <Icon.ArrowLeft size={18} />
             </Link>
-            <button
+            <Link
+              href="/installningar"
               aria-label="Inställningar"
               className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors"
             >
@@ -55,7 +56,7 @@ export default async function MinHundPage() {
                 <circle cx={12} cy={12} r={3} />
                 <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
               </svg>
-            </button>
+            </Link>
           </div>
 
           {/* Avatar + namn */}
@@ -176,18 +177,26 @@ export default async function MinHundPage() {
           {/* Åtgärder */}
           <div className="flex flex-col gap-2">
             <ActionRow
+              href="/min-hund/redigera"
               label="Redigera Lunas profil"
               hint="Ras, ålder, allergier, anteckningar"
             />
             <ActionRow
+              href="/min-hund/medlemskap"
               label="Hantera medlemskap"
               hint="Uppgradera, pausa eller avsluta"
             />
             <ActionRow
+              href="/min-hund/vaccinationsintyg"
               label="Ladda upp vaccinationsintyg"
               hint="Krävs för gruppträning"
             />
-            <ActionRow label="Logga ut" hint="" variant="muted" />
+            <ActionRow
+              href="/logga-ut"
+              label="Logga ut"
+              hint=""
+              variant="muted"
+            />
           </div>
         </div>
 
@@ -215,10 +224,12 @@ function StatCard({
 }
 
 function ActionRow({
+  href,
   label,
   hint,
   variant = "default",
 }: {
+  href: string;
   label: string;
   hint: string;
   variant?: "default" | "muted";
@@ -226,9 +237,9 @@ function ActionRow({
   const textClass =
     variant === "muted" ? "text-text-muted" : "text-charcoal-900";
   return (
-    <button
+    <Link
+      href={href}
       className="w-full flex items-center justify-between bg-bg-surface rounded-[16px] p-3.5 border border-charcoal-900/[0.04] hover:border-sage-500/30 transition-colors text-left"
-      type="button"
     >
       <div className="flex-1 min-w-0">
         <p className={`text-[13px] font-semibold ${textClass}`}>{label}</p>
@@ -237,6 +248,6 @@ function ActionRow({
         )}
       </div>
       <Icon.ChevronRight size={16} className="text-text-muted flex-shrink-0" />
-    </button>
+    </Link>
   );
 }

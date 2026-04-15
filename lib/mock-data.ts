@@ -21,6 +21,7 @@ export type Dog = {
   weight: string;
   note?: string;
   memberSince: string;
+  photoUrl?: string; // /public/photos/dogs/{id}.jpg när foto finns
 };
 
 export type Owner = {
@@ -37,6 +38,7 @@ export type Instructor = {
   rating: number;
   totalSessions: number;
   bio: string;
+  photoUrl?: string; // /public/photos/instructors/{id}.jpg
 };
 
 export type Park = {
@@ -51,6 +53,7 @@ export type Park = {
   instructors: number;
   tagline: string;
   facilities: string[];
+  photoUrl?: string; // /public/photos/parks/{id}.jpg, 16:9
 };
 
 export type MembershipTier = {
@@ -355,6 +358,7 @@ export type GroupSession = {
   priceSEK: number; // 0 = ingår i PREMIUM
   level: "valp" | "grund" | "medel" | "alla";
   tags: string[];
+  photoUrl?: string; // /public/photos/sessions/{id}.jpg, 72×72 thumb
 };
 
 export const mockInstructors: Instructor[] = [

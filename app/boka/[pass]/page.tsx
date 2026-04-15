@@ -67,7 +67,8 @@ export default async function PassDetailPage({
             >
               <Icon.ArrowLeft size={18} />
             </Link>
-            <button
+            <Link
+              href="/dela"
               aria-label="Dela"
               className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors"
             >
@@ -77,7 +78,7 @@ export default async function PassDetailPage({
                 <circle cx={18} cy={19} r={3} />
                 <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
               </svg>
-            </button>
+            </Link>
           </div>
 
           {/* Kategori-tagg + titel */}

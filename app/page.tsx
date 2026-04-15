@@ -57,12 +57,13 @@ export default async function HomePage() {
                 </p>
               </div>
             </div>
-            <button
-              className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center"
+            <Link
+              href="/notiser"
+              className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors"
               aria-label="Notiser"
             >
               <Icon.Bell size={16} />
-            </button>
+            </Link>
           </div>
 
           {/* Hero rubrik */}
@@ -102,7 +103,7 @@ export default async function HomePage() {
           </Link>
 
           {/* Nästa pass */}
-          <Link href="/pass" className="block mb-4">
+          <Link href="/mina-bokningar" className="block mb-4">
             <div className="bg-bg-surface rounded-[22px] p-4 flex gap-3.5 items-center border border-charcoal-900/[0.04]">
               <div className="w-14 h-14 rounded-2xl bg-rose-100 flex flex-col items-center justify-center flex-shrink-0">
                 <span className="text-[10px] text-rose-700 font-bold tracking-wider">
