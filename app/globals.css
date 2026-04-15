@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Dogpark designsystem v2 som CSS-variabler.
+ * Komplement till tailwind.config.ts för fall där vi vill nå tokens från CSS direkt.
+ */
+:root {
+  /* Lager 1: Primitives */
+  --sage-50: #F4F7F3;
+  --sage-100: #E5EBE2;
+  --sage-200: #C8D4C2;
+  --sage-400: #95A892;
+  --sage-500: #8FA689;
+  --sage-600: #6F8A6B;
+  --sage-800: #3F5A3D;
+
+  --rose-50: #FBF1F3;
+  --rose-100: #F5DDE2;
+  --rose-300: #DBA1AB;
+  --rose-500: #C77B89;
+  --rose-700: #8E4D5A;
+
+  --bone-50: #FDFCF9;
+  --bone-100: #F8F5EE;
+  --bone-200: #EFEAE0;
+
+  --charcoal-700: #2D2A26;
+  --charcoal-900: #14110D;
+
+  /* Lager 2: Semantic */
+  --color-bg-page: var(--bone-50);
+  --color-bg-surface: white;
+  --color-bg-surface-raised: var(--bone-100);
+  --color-bg-inverse: var(--charcoal-900);
+
+  --color-action-primary: var(--sage-500);
+  --color-action-primary-hover: var(--sage-600);
+
+  --color-text-primary: #1A1714;
+  --color-text-secondary: var(--charcoal-700);
+  --color-text-muted: #6B6862;
+  --color-text-on-inverse: var(--bone-50);
+  --color-text-on-inverse-muted: #B8AFA0;
+
+  --color-border-subtle: rgba(20, 17, 13, 0.06);
+  --color-border-default: rgba(20, 17, 13, 0.12);
+  --color-border-focus: var(--sage-500);
+}
+
+html, body {
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Stagger-pattern för skärm-load.
+   Sätt klassen "stagger" på en container, så fadar barnelementen in en efter en. */
+.stagger > * {
+  opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.10s; }
+.stagger > *:nth-child(2) { animation-delay: 0.20s; }
+.stagger > *:nth-child(3) { animation-delay: 0.30s; }
+.stagger > *:nth-child(4) { animation-delay: 0.40s; }
+.stagger > *:nth-child(5) { animation-delay: 0.50s; }
+.stagger > *:nth-child(6) { animation-delay: 0.60s; }
+.stagger > *:nth-child(7) { animation-delay: 0.70s; }
+.stagger > *:nth-child(8) { animation-delay: 0.80s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Tillgänglighet: respektera reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus-ring för tangentbordsnavigering */
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Stänga av default focus där vi har egen styling */
+:focus:not(:focus-visible) {
+  outline: none;
+}
