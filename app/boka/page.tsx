@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { PhotoThumb } from "@/components/PhotoThumb";
 import {
   mockGroupSessions,
   type GroupSession,
@@ -12,8 +13,11 @@ import {
 
 /**
  * /boka — utforska gruppträningar.
- * Filter-chips + scrollbar lista grupperad per dag.
- * Empty state (designsystem §6.2) när filter inte matchar.
+ * Designsystem v0.3 §14, Version C (middle density):
+ *  - display-md 24px hero
+ *  - 72×72 PhotoThumb till vänster i varje pass-kort
+ *  - Filter-chips med count-suffix
+ *  - Sök är ikon-knapp, inte fält
  */
 
 type Filter = "alla" | "nosework" | "lydnad" | "fys" | "avslappning";
@@ -26,27 +30,47 @@ const filters: { id: Filter; label: string }[] = [
   { id: "avslappning", label: "Lugn" },
 ];
 
+function matchesFilter(s: GroupSession, f: Filter): boolean {
+  if (f === "alla") return true;
+  if (f === "fys") return s.category === "fys" || s.category === "hundgym";
+  return s.category === f;
+}
+
 export default function BokaPage() {
   const [filter, setFilter] = useState<Filter>("alla");
 
-  const filteredSessions = useMemo(() => {
-    if (filter === "alla") return mockGroupSessions;
-    return mockGroupSessions.filter((s) => {
-      if (filter === "fys") return s.category === "fys" || s.category === "hundgym";
-      return s.category === filter;
-    });
-  }, [filter]);
+  // Räkna pass per filter för count-suffix.
+  const counts = useMemo(() => {
+    const map: Record<Filter, number> = {
+      alla: 0,
+      nosework: 0,
+      lydnad: 0,
+      fys: 0,
+      avslappning: 0,
+    };
+    for (const s of mockGroupSessions) {
+      map.alla++;
+      (Object.keys(map) as Filter[]).forEach((f) => {
+        if (f !== "alla" && matchesFilter(s, f)) map[f]++;
+      });
+    }
+    return map;
+  }, []);
 
-  // Gruppera per dag (datumsträng).
+  const filteredSessions = useMemo(
+    () => mockGroupSessions.filter((s) => matchesFilter(s, filter)),
+    [filter],
+  );
+
+  // Gruppera per dag.
   const grouped = useMemo(() => {
     const map = new Map<string, GroupSession[]>();
     for (const s of filteredSessions) {
       const d = new Date(s.startsAt);
-      const key = d.toISOString().slice(0, 10); // YYYY-MM-DD
+      const key = d.toISOString().slice(0, 10);
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(s);
     }
-    // Sortera nycklar stigande
     return Array.from(map.entries()).sort(([a], [b]) => (a < b ? -1 : 1));
   }, [filteredSessions]);
 
@@ -62,7 +86,7 @@ export default function BokaPage() {
       <PhoneFrame>
         <div className="h-full overflow-y-auto px-5 pb-24">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3">
             <Link
               href="/"
               aria-label="Tillbaka"
@@ -75,47 +99,61 @@ export default function BokaPage() {
               aria-label="Sök"
               className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors"
             >
-              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width={16}
+                height={16}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <circle cx={11} cy={11} r={8} />
                 <path d="M21 21l-4.3-4.3" />
               </svg>
             </Link>
           </div>
 
-          {/* Hero */}
-          <div className="mb-5">
-            <h1 className="font-display text-[26px] leading-[1.15]">
-              Utforska
-              <br />
-              <em className="text-sage-600 italic">veckans pass</em>
+          {/* Hero — display-md 24px, Version C */}
+          <div className="mb-4">
+            <h1 className="font-display text-[24px] leading-[1.15]">
+              Utforska <em className="text-sage-600 italic">veckans pass</em>
             </h1>
-            <p className="text-sm text-text-muted mt-2">
-              {mockGroupSessions.length} pass närmaste dagarna på Dogpark
-              Uppsala
+            <p className="text-[13px] text-text-muted mt-1">
+              {mockGroupSessions.length} pass närmaste veckan · Dogpark Uppsala
             </p>
           </div>
 
-          {/* Filter-chips */}
+          {/* Filter-chips med count-suffix */}
           <div
-            className="flex gap-2 overflow-x-auto -mx-5 px-5 mb-5 pb-2"
+            className="flex gap-2 overflow-x-auto -mx-5 px-5 mb-4 pb-2"
             role="tablist"
             aria-label="Filter pass-typ"
           >
-            {filters.map((f) => (
-              <button
-                key={f.id}
-                role="tab"
-                aria-selected={filter === f.id}
-                onClick={() => setFilter(f.id)}
-                className={`flex-shrink-0 h-9 px-4 rounded-pill text-[13px] font-semibold transition-colors ${
-                  filter === f.id
-                    ? "bg-charcoal-900 text-bone-50"
-                    : "bg-bone-200 text-text-secondary hover:bg-bone-100"
-                }`}
-              >
-                {f.label}
-              </button>
-            ))}
+            {filters.map((f) => {
+              const active = filter === f.id;
+              const count = counts[f.id];
+              const disabled = count === 0 && !active;
+              return (
+                <button
+                  key={f.id}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setFilter(f.id)}
+                  disabled={disabled}
+                  className={`flex-shrink-0 h-8 px-3 rounded-pill text-[12px] font-semibold transition-colors ${
+                    active
+                      ? "bg-charcoal-900 text-bone-50"
+                      : disabled
+                        ? "bg-bone-200 text-text-muted opacity-50 cursor-not-allowed"
+                        : "bg-bone-200 text-text-secondary hover:bg-bone-100"
+                  }`}
+                >
+                  {f.label} · {count}
+                </button>
+              );
+            })}
           </div>
 
           {/* Lista */}
@@ -125,7 +163,7 @@ export default function BokaPage() {
               filterLabel={filters.find((f) => f.id === filter)?.label ?? ""}
             />
           ) : (
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-4">
               {grouped.map(([dateKey, sessions]) => (
                 <DayGroup key={dateKey} dateKey={dateKey} sessions={sessions} />
               ))}
@@ -152,9 +190,14 @@ function DayGroup({
 
   return (
     <div>
-      <p className="text-[11px] font-bold tracking-wider text-text-muted uppercase mb-2">
-        {dayLabel}
-      </p>
+      <div className="flex items-baseline justify-between mb-2">
+        <p className="text-[11px] font-bold tracking-wider text-text-muted uppercase">
+          {dayLabel}
+        </p>
+        <p className="text-[10px] text-text-muted">
+          {sessions.length} {sessions.length === 1 ? "pass" : "pass"}
+        </p>
+      </div>
       <div className="flex flex-col gap-2">
         {sessions.map((s) => (
           <SessionCard key={s.id} session={s} />
@@ -171,63 +214,59 @@ function SessionCard({ session }: { session: GroupSession }) {
     minute: "2-digit",
   });
   const isFull = session.spotsLeft === 0;
-  const isAlmostFull = session.spotsLeft > 0 && session.spotsLeft <= 2;
 
   return (
     <Link
       href={`/boka/${session.id}`}
       aria-disabled={isFull}
-      className={`block bg-bg-surface rounded-[20px] p-4 border border-charcoal-900/[0.04] transition-all duration-200 ${
+      className={`block bg-bg-surface rounded-[20px] p-3 border border-charcoal-900/[0.04] transition-all duration-200 ${
         isFull
           ? "opacity-60 pointer-events-none"
           : "hover:border-sage-500/30 hover:shadow-md"
       }`}
     >
       <div className="flex items-start gap-3">
-        {/* Tidsblock */}
-        <div className="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-2xl bg-sage-100">
-          <span className="font-display text-[15px] leading-none text-sage-800">
+        {/* 72×72 thumbnail med tidsbadge */}
+        <div className="relative flex-shrink-0">
+          <PhotoThumb
+            src={session.photoUrl}
+            alt={session.title}
+            size={72}
+            rounded="2xl"
+            variant="session"
+          />
+          <span
+            className="absolute bottom-1.5 left-1.5 bg-charcoal-900/80 text-bone-50 text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-pill"
+            aria-hidden="true"
+          >
             {timeLabel}
-          </span>
-          <span className="text-[10px] text-sage-800 mt-1">
-            {session.durationMin} min
           </span>
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2 mb-1">
-            <h3 className="font-semibold text-[15px] leading-tight">
+        <div className="flex-1 min-w-0 pt-0.5">
+          <div className="flex items-start justify-between gap-2 mb-0.5">
+            <h3 className="font-semibold text-[14px] leading-tight truncate">
               {session.title}
             </h3>
-            <SpotsBadge
-              spotsLeft={session.spotsLeft}
-              isFull={isFull}
-              isAlmostFull={isAlmostFull}
-            />
+            <SpotsBadge spotsLeft={session.spotsLeft} spotsTotal={session.spotsTotal} />
           </div>
-          <p className="text-[12px] text-text-muted">
-            {session.instructorName} · {session.parkName}
+          <p className="text-[12px] text-text-muted leading-snug truncate">
+            {session.durationMin} min · {session.instructorName}
           </p>
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-1.5 mt-1.5">
             {session.priceSEK === 0 ? (
               <span className="text-[10px] font-bold tracking-wider text-sage-800 uppercase">
-                Ingår i PREMIUM
+                Ingår
               </span>
             ) : (
               <span className="text-[10px] font-bold tracking-wider text-text-secondary uppercase">
                 {session.priceSEK} kr
               </span>
             )}
-            {session.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[10px] text-text-muted"
-                aria-hidden="true"
-              >
-                · {tag}
-              </span>
-            ))}
+            <span className="text-[10px] text-text-muted">
+              · {levelLabel(session.level)}
+            </span>
           </div>
         </div>
       </div>
@@ -237,32 +276,48 @@ function SessionCard({ session }: { session: GroupSession }) {
 
 function SpotsBadge({
   spotsLeft,
-  isFull,
-  isAlmostFull,
+  spotsTotal,
 }: {
   spotsLeft: number;
-  isFull: boolean;
-  isAlmostFull: boolean;
+  spotsTotal: number;
 }) {
-  if (isFull) {
+  if (spotsLeft === 0) {
     return (
-      <span className="flex-shrink-0 text-[10px] font-bold tracking-wider bg-bone-200 text-text-muted px-2 py-0.5 rounded-pill uppercase">
-        Fullt
+      <span className="flex-shrink-0 text-[10px] font-bold tracking-wider bg-charcoal-700 text-text-on-inverse-muted px-2 py-0.5 rounded-pill uppercase">
+        Fullbokat
       </span>
     );
   }
-  if (isAlmostFull) {
+  const ratio = spotsLeft / spotsTotal;
+  if (ratio < 0.2) {
     return (
       <span className="flex-shrink-0 text-[10px] font-bold tracking-wider bg-rose-100 text-rose-700 px-2 py-0.5 rounded-pill uppercase">
-        {spotsLeft} kvar
+        {spotsLeft === 1 ? "Bara 1 kvar" : `${spotsLeft} kvar`}
+      </span>
+    );
+  }
+  if (ratio < 0.5) {
+    return (
+      <span className="flex-shrink-0 text-[10px] font-semibold bg-bone-200 text-text-secondary px-2 py-0.5 rounded-pill">
+        {spotsLeft} av {spotsTotal} kvar
       </span>
     );
   }
   return (
-    <span className="flex-shrink-0 text-[10px] font-semibold text-text-muted">
-      {spotsLeft} platser
+    <span className="flex-shrink-0 text-[10px] font-semibold bg-sage-100 text-sage-800 px-2 py-0.5 rounded-pill">
+      {spotsLeft} av {spotsTotal} kvar
     </span>
   );
+}
+
+function levelLabel(level: string): string {
+  const map: Record<string, string> = {
+    valp: "Valp",
+    grund: "Grund",
+    medel: "Medel",
+    alla: "Alla nivåer",
+  };
+  return map[level] ?? level;
 }
 
 function EmptyState({
@@ -278,7 +333,17 @@ function EmptyState({
         className="w-20 h-20 rounded-full bg-bone-200 mx-auto mb-4 flex items-center justify-center"
         aria-hidden="true"
       >
-        <svg width={36} height={36} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-sage-500">
+        <svg
+          width={36}
+          height={36}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-sage-500"
+        >
           <circle cx={11} cy={11} r={8} />
           <path d="M21 21l-4.3-4.3" />
         </svg>
