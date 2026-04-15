@@ -174,6 +174,12 @@ export default async function HomePage() {
             Bli medlem
           </Link>
           <Link
+            href="/boka"
+            className="text-sage-600 font-semibold hover:underline"
+          >
+            Boka pass
+          </Link>
+          <Link
             href="/denna-finns-inte"
             className="text-rose-700 font-semibold hover:underline"
           >
