@@ -1,22 +1,35 @@
 # Dogpark medlemsapp
 
-Klickbar prototyp v0.1 av Dogparks medlemsapp. Byggd med Next.js 15, React 19, Tailwind 3.4 och fejkdata.
+Klickbar prototyp v0.4 av Dogparks medlemsapp. Byggd med Next.js 15, React 19, Tailwind 3.4 och fejkdata.
 
-## Vad finns med i v0.1
+## Vad finns med i v0.4
 
-- **Hemskärmen** med Lunas avatar, "Din resa" (SnifferQuest pass 5 av 8), nästa bokade pass, och snabbåtgärder.
-- **Onboarding-flödet** i tre steg: välkomst med hundens namn, berätta om hunden (ras, ålder, erfarenhet), första rekommenderade pass.
-- **Designsystemet** komplett implementerat enligt v2-dokumentet: tre-lagers tokens (primitives → semantic → component), Fraunces + Manrope från Google Fonts, sage + dusty pink + bone-paletten.
-- **Tillgänglighets-baseline**: focus-rings för tangentbordsnavigering, reduced-motion-stöd, semantiska element, ARIA-labels på interaktiva ikoner.
+- **Hela nav-ytan** är byggd. Ingen StubPage är längre i bruk (komponenten står kvar för framtida funktioner).
+- **Version C är default** — 24px hero, 13px underrubrik, kompakta kort. Onboarding steg 1+2 och /bli-medlem är harmoniserade till samma metrik.
+- **/min-resa** — programtidslinje med milstolpar, status per pass (klar/nu/framtida).
+- **/veckans-ovning** — videoplaceholder + stegvis guide + logga-gjord-knapp.
+- **/installningar** — toggles med `role="switch"` och grupperade sektioner.
+- **/notiser** — oläst/läst-grupper, typchip, djuplänkar.
+- **/dela** — share sheet med kopiera-länk och 4 delningsikoner.
+- **/min-hund/redigera, medlemskap, vaccinationsintyg, logga-ut** — alla fullt byggda.
+- **SVG-illustrationer** som fotofallback i varumärkespaletten. En per hund, park, och gruppass-kategori.
+- **A11y-svep** — radiogroup-roller på onboarding-knappgrupper, switch-roller på toggles, skip-link-stöd, genomgående aria-label på ikoniga knappar.
 
-## Vad väntar till v0.2 och senare
+## Tidigare versioner
 
-- Pass-bokning med detaljvy och Stripe-betalning.
-- Park-vy med karta och faciliteter.
-- Hund-profilen som scrapbook med milstolpar.
-- Instruktörsläge och feedback-loopen.
+- **v0.1** — hemskärm, onboarding (3 steg), designsystem-baseline.
+- **v0.2** — bokning, mina bokningar, parklista.
+- **v0.3** — Version A/B/C-testning, /min-hund som scrapbook, Stripe-placeholder, dead-link-policy via StubPage.
+- **v0.4** — hela nav-ytan byggd, Version C som default, SVG-illustrationer, a11y-svep. Se `design-system-v0.4.md`.
+
+## Vad väntar till v0.5 och senare
+
 - Riktig backend (Supabase + auth + Stripe).
-- Hemmaövningar (kräver content-produktion).
+- Riktig foto-uppladdning (kopplad mot CDN eller Supabase Storage).
+- Vaccinationsintyg mot veterinärsystem.
+- Pausa/avsluta-flöden för medlemskap.
+- Instruktörsläge och feedback-loopen.
+- Video-content för hemmaövningar (kräver content-produktion).
 
 ## Köra projektet
 
