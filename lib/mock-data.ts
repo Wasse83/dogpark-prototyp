@@ -287,6 +287,30 @@ export const mockRecommendedProgram: Program = {
     "Border collies älskar att tänka, och Luna har grunderna. Nosework ger henne ett jobb att lösa varje vecka.",
 };
 
+export const mockAlternativePrograms: Program[] = [
+  mockRecommendedProgram,
+  {
+    id: "prog-fokuslab",
+    name: "Fokuslabbet",
+    description:
+      "Lugna, koncentrerade pass där hunden tränar impulskontroll. 6 pass över 6 veckor.",
+    totalSessions: 6,
+    priceSEK: 995,
+    whyForYou:
+      "Perfekt om Luna behöver landa lite innan hon sätter tänderna i något större.",
+  },
+  {
+    id: "prog-stadsrutan",
+    name: "Stadsrutan",
+    description:
+      "Att träffa hundar, cyklar och barnvagnar utan att tappa fokus. 5 pass över 5 veckor.",
+    totalSessions: 5,
+    priceSEK: 795,
+    whyForYou:
+      "Bra om ni bor centralt och vill att Luna ska trivas i folkvimlet.",
+  },
+];
+
 export const mockMilestones: Milestone[] = [
   { id: "m1", title: "Klarade SnifferQuest säsong 1", daysAgo: 2, type: "achievement" },
   { id: "m2", title: "10 pass tillsammans", daysAgo: 21, type: "love" },
@@ -317,6 +341,11 @@ export async function getNextSession(): Promise<Session> {
 export async function getRecommendedProgram(): Promise<Program> {
   await fakeDelay();
   return mockRecommendedProgram;
+}
+
+export async function getProgramAlternatives(): Promise<Program[]> {
+  await fakeDelay();
+  return mockAlternativePrograms;
 }
 
 export async function getMilestones(): Promise<Milestone[]> {

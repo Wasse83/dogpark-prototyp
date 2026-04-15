@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ProgressBar } from "@/components/ProgressBar";
 import { Button } from "@/components/Button";
@@ -23,7 +24,12 @@ export default function OnboardingStep1() {
         <span className="text-[11px] font-bold tracking-wider text-text-muted">
           STEG 1 AV 3
         </span>
-        <span className="text-xs text-text-muted">Hoppa över</span>
+        <Link
+          href="/"
+          className="text-xs text-text-muted hover:text-sage-600 transition-colors"
+        >
+          Hoppa över
+        </Link>
       </div>
 
       <div className="px-5 pt-8 flex-1 flex flex-col stagger">
