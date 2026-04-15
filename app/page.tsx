@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { Icon } from "@/components/Icon";
+import { BottomNav } from "@/components/BottomNav";
 import {
   getDog,
   getOwner,
@@ -161,64 +162,5 @@ export default async function HomePage() {
         </Link>
       </div>
     </div>
-  );
-}
-
-function BottomNav() {
-  return (
-    <div className="absolute bottom-0 inset-x-0 h-20 flex justify-around items-center pb-3 px-6 z-[5]"
-         style={{
-           background: "linear-gradient(to top, rgba(253,252,249,1) 60%, rgba(253,252,249,0))",
-         }}>
-      <NavIcon active>
-        <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 12l9-9 9 9" />
-          <path d="M5 10v10h14V10" />
-        </svg>
-      </NavIcon>
-      <NavIcon>
-        <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-          <rect x={3} y={4} width={18} height={18} rx={2} />
-          <path d="M16 2v4M8 2v4M3 10h18" />
-        </svg>
-      </NavIcon>
-
-      <button
-        className="w-[60px] h-[60px] rounded-full bg-action-primary flex items-center justify-center -mt-7 transition-transform duration-200 ease-spring active:scale-90 active:-rotate-3 shadow-lg shadow-sage-500/30"
-        aria-label="Lägg till"
-      >
-        <Icon.Plus size={24} className="text-bone-50" strokeWidth={2.5} />
-      </button>
-
-      <NavIcon>
-        <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-          <circle cx={11} cy={11} r={8} />
-          <path d="M21 21l-4.3-4.3" />
-        </svg>
-      </NavIcon>
-      <NavIcon>
-        <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-          <circle cx={12} cy={8} r={4} />
-          <path d="M4 21v-1a7 7 0 0 1 14 0v1" />
-        </svg>
-      </NavIcon>
-    </div>
-  );
-}
-
-function NavIcon({
-  children,
-  active = false,
-}: {
-  children: React.ReactNode;
-  active?: boolean;
-}) {
-  return (
-    <button
-      className={active ? "text-sage-600 opacity-100" : "text-charcoal-900 opacity-50"}
-      aria-current={active ? "page" : undefined}
-    >
-      {children}
-    </button>
   );
 }
