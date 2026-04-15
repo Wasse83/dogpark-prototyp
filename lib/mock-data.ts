@@ -320,6 +320,88 @@ export const mockMilestones: Milestone[] = [
   { id: "m2", title: "10 pass tillsammans", daysAgo: 21, type: "love" },
 ];
 
+// /min-resa — detaljerad programstruktur för aktuellt program (SnifferQuest).
+export type JourneyStep = {
+  id: string;
+  sessionNumber: number;
+  title: string;
+  description: string;
+  dateLabel: string; // t.ex. "22 apr"
+  status: "klar" | "nu" | "framtida";
+};
+
+export const mockJourneySteps: JourneyStep[] = [
+  {
+    id: "js-1",
+    sessionNumber: 1,
+    title: "Första nosträffen",
+    description: "Luna lär sig markera doftburken. Anna leder, stilla tempo.",
+    dateLabel: "25 mar",
+    status: "klar",
+  },
+  {
+    id: "js-2",
+    sessionNumber: 2,
+    title: "Flera burkar, en doft",
+    description: "Väljer rätt bland fem, med belöning direkt på plats.",
+    dateLabel: "1 apr",
+    status: "klar",
+  },
+  {
+    id: "js-3",
+    sessionNumber: 3,
+    title: "Dold burk",
+    description: "Första dolda sökningen. Luna tog det lugnt, det var imponerande.",
+    dateLabel: "8 apr",
+    status: "klar",
+  },
+  {
+    id: "js-4",
+    sessionNumber: 4,
+    title: "Två rum, en doft",
+    description: "Sök mellan rum, distraktioner från andra hundar.",
+    dateLabel: "15 apr",
+    status: "klar",
+  },
+  {
+    id: "js-5",
+    sessionNumber: 5,
+    title: "Tidspress",
+    description: "90 sekunder att markera. Luna är redo för det här.",
+    dateLabel: "22 apr",
+    status: "nu",
+  },
+  {
+    id: "js-6",
+    sessionNumber: 6,
+    title: "Flera dofter",
+    description: "Skilja två dofter åt. Nytt moment, vi tar det i små steg.",
+    dateLabel: "29 apr",
+    status: "framtida",
+  },
+  {
+    id: "js-7",
+    sessionNumber: 7,
+    title: "Utomhusmiljö",
+    description: "Första söket utanför. Vind, andra dofter, ny verklighet.",
+    dateLabel: "6 maj",
+    status: "framtida",
+  },
+  {
+    id: "js-8",
+    sessionNumber: 8,
+    title: "Uppflyttning",
+    description: "Hela säsongen summeras. Nivå 3 väntar efter det här.",
+    dateLabel: "13 maj",
+    status: "framtida",
+  },
+];
+
+export async function getJourneySteps(): Promise<JourneyStep[]> {
+  await fakeDelay();
+  return mockJourneySteps;
+}
+
 // ---------- Mock-funktioner ----------
 
 export async function getDog(): Promise<Dog> {
