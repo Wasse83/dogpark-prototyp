@@ -569,3 +569,164 @@ export async function getInstructor(id: string): Promise<Instructor | null> {
   await fakeDelay();
   return mockInstructors.find((i) => i.id === id) ?? null;
 }
+
+// ---------- Bokningar ----------
+
+export type Booking = {
+  id: string;
+  sessionId: string;
+  bookedAt: string; // ISO när bokningen gjordes
+  status: "kommande" | "genomfört" | "avbokad";
+};
+
+// Genererar datum relativt idag för historiska bokningar.
+function isoDaysAgo(days: number, hour: number, minute = 0): string {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  d.setHours(hour, minute, 0, 0);
+  return d.toISOString();
+}
+
+export const mockBookings: Booking[] = [
+  // Kommande: refererar till befintliga gruppass
+  {
+    id: "bk-1",
+    sessionId: "gs-1", // Hundyoga om 1 dag
+    bookedAt: isoDaysAgo(2, 9, 15),
+    status: "kommande",
+  },
+  {
+    id: "bk-2",
+    sessionId: "gs-2", // Nosework grund om 2 dagar
+    bookedAt: isoDaysAgo(5, 20, 0),
+    status: "kommande",
+  },
+  {
+    id: "bk-3",
+    sessionId: "gs-5", // Inkallning om 4 dagar
+    bookedAt: isoDaysAgo(1, 7, 45),
+    status: "kommande",
+  },
+];
+
+// Historiska pass, inte direkt kopplade till gs-listan ovan (den är framåt i tid).
+export type PastBooking = {
+  id: string;
+  title: string;
+  instructorName: string;
+  parkName: string;
+  endedAt: string; // ISO
+  durationMin: number;
+  note?: string;
+};
+
+export const mockPastBookings: PastBooking[] = [
+  {
+    id: "pb-1",
+    title: "Nosework, grund",
+    instructorName: "Anna Lindgren",
+    parkName: "Dogpark Uppsala",
+    endedAt: isoDaysAgo(3, 17, 30),
+    durationMin: 60,
+    note: "Luna hittade alla tre göm, kontakten satt",
+  },
+  {
+    id: "pb-2",
+    title: "Hundyoga",
+    instructorName: "Mira Bacova",
+    parkName: "Dogpark Uppsala",
+    endedAt: isoDaysAgo(10, 18, 0),
+    durationMin: 45,
+  },
+  {
+    id: "pb-3",
+    title: "Fredagsfys",
+    instructorName: "Maria Olsson",
+    parkName: "Dogpark Uppsala",
+    endedAt: isoDaysAgo(17, 16, 30),
+    durationMin: 45,
+    note: "Första gången på balansboll, nyfiken hund",
+  },
+  {
+    id: "pb-4",
+    title: "Passivitetsträning",
+    instructorName: "Mira Bacova",
+    parkName: "Dogpark Uppsala",
+    endedAt: isoDaysAgo(24, 14, 0),
+    durationMin: 50,
+  },
+];
+
+export async function getUpcomingBookings(): Promise<
+  Array<Booking & { session: GroupSession }>
+> {
+  await fakeDelay();
+  const bySession = new Map(mockGroupSessions.map((s) => [s.id, s]));
+  return mockBookings
+    .filter((b) => b.status === "kommande")
+    .map((b) => ({ ...b, session: bySession.get(b.sessionId)! }))
+    .filter((b) => b.session) // skydd mot saknad referens
+    .sort(
+      (a, b) =>
+        new Date(a.session.startsAt).getTime() -
+        new Date(b.session.startsAt).getTime(),
+    );
+}
+
+export async function getPastBookings(): Promise<PastBooking[]> {
+  await fakeDelay();
+  return mockPastBookings;
+}
+
+// ---------- Min hund ----------
+
+export type DogProfile = {
+  dog: Dog;
+  owner: Owner;
+  membership: {
+    tierId: "bas" | "plus" | "premium";
+    tierName: string;
+    renewsAt: string; // ISO
+    pricePerMonth: number;
+    parkName: string;
+  };
+  stats: {
+    sessionsCompleted: number;
+    hoursTrained: number;
+    levelsUnlocked: number;
+    streakWeeks: number;
+  };
+  nextMilestone: {
+    title: string;
+    description: string;
+    progress: number; // 0-100
+  };
+};
+
+export const mockDogProfile: DogProfile = {
+  dog: mockDog,
+  owner: mockOwner,
+  membership: {
+    tierId: "premium",
+    tierName: "PREMIUM",
+    renewsAt: isoInDays(18, 0, 0),
+    pricePerMonth: 849,
+    parkName: "Dogpark Uppsala",
+  },
+  stats: {
+    sessionsCompleted: 23,
+    hoursTrained: 19,
+    levelsUnlocked: 2,
+    streakWeeks: 6,
+  },
+  nextMilestone: {
+    title: "Nivå 3 låses upp",
+    description: "Två pass kvar i Lugn vardag innan nästa nivå öppnar.",
+    progress: 75,
+  },
+};
+
+export async function getDogProfile(): Promise<DogProfile> {
+  await fakeDelay();
+  return mockDogProfile;
+}

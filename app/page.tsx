@@ -180,6 +180,18 @@ export default async function HomePage() {
             Boka pass
           </Link>
           <Link
+            href="/mina-bokningar"
+            className="text-sage-600 font-semibold hover:underline"
+          >
+            Mina bokningar
+          </Link>
+          <Link
+            href="/min-hund"
+            className="text-sage-600 font-semibold hover:underline"
+          >
+            Min hund
+          </Link>
+          <Link
             href="/denna-finns-inte"
             className="text-rose-700 font-semibold hover:underline"
           >
