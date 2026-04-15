@@ -124,6 +124,7 @@ export const mockDog: Dog = {
   weight: "17 kg",
   note: "Lite osäker med stora hundar",
   memberSince: "mars 2025",
+  photoUrl: "/photos/dogs/dog-1.svg",
 };
 
 export const mockInstructor: Instructor = {
@@ -170,6 +171,7 @@ export const mockParks: Park[] = [
     instructors: 4,
     tagline: "Flaggskeppet, 10 000 kvm vid Bjursjön",
     facilities: ["Stora tältet", "Hundgym", "Privatpark", "Shop", "Lånehörna"],
+    photoUrl: "/photos/parks/uddevalla.svg",
   },
   {
     id: "park-uppsala",
@@ -188,6 +190,7 @@ export const mockParks: Park[] = [
       "Gratis tandvård för PREMIUM",
       "Vardagsrum",
     ],
+    photoUrl: "/photos/parks/uppsala.svg",
   },
   {
     id: "park-vasteras",
@@ -201,6 +204,7 @@ export const mockParks: Park[] = [
     instructors: 2,
     tagline: "Nyöppnad, bygger upp gruppträningsschema",
     facilities: ["Hundgym", "Vardagsrum", "Shop"],
+    photoUrl: "/photos/parks/vasteras.svg",
   },
 ];
 
@@ -441,7 +445,13 @@ function isoInDays(days: number, hour: number, minute = 0): string {
   return d.toISOString();
 }
 
-export const mockGroupSessions: GroupSession[] = [
+// Kategori-illustration per pass. Alla gruppass mappar sin kategori
+// till en bild i /public/photos/sessions/{category}.svg.
+function categoryPhoto(category: GroupSession["category"]): string {
+  return `/photos/sessions/${category}.svg`;
+}
+
+const rawGroupSessions: GroupSession[] = [
   {
     id: "gs-1",
     title: "Hundyoga",
@@ -587,6 +597,12 @@ export const mockGroupSessions: GroupSession[] = [
     tags: ["Låg belastning"],
   },
 ];
+
+// Berika varje pass med photoUrl baserat på kategori.
+export const mockGroupSessions: GroupSession[] = rawGroupSessions.map((s) => ({
+  ...s,
+  photoUrl: s.photoUrl ?? categoryPhoto(s.category),
+}));
 
 export async function getGroupSessions(): Promise<GroupSession[]> {
   await fakeDelay();

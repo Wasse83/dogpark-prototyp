@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Fys">
+  <rect width="200" height="200" fill="#E8C5CB"/>
+  <!-- Hoppande hund i rörelse -->
+  <ellipse cx="100" cy="160" rx="70" ry="12" fill="#C77B89" opacity="0.4"/>
+  <ellipse cx="100" cy="105" rx="50" ry="28" fill="#A84F5E"/>
+  <ellipse cx="145" cy="85" rx="22" ry="20" fill="#A84F5E"/>
+  <ellipse cx="155" cy="70" rx="6" ry="12" fill="#A84F5E" transform="rotate(30 155 70)"/>
+  <ellipse cx="138" cy="68" rx="6" ry="12" fill="#A84F5E" transform="rotate(-10 138 68)"/>
+  <circle cx="150" cy="87" r="2.5" fill="#FDFCF9"/>
+  <!-- Ben i rörelse -->
+  <rect x="70" y="125" width="8" height="25" rx="3" fill="#A84F5E"/>
+  <rect x="85" y="125" width="8" height="32" rx="3" fill="#A84F5E" transform="rotate(-15 85 125)"/>
+  <rect x="110" y="125" width="8" height="30" rx="3" fill="#A84F5E" transform="rotate(10 110 125)"/>
+  <rect x="125" y="125" width="8" height="26" rx="3" fill="#A84F5E"/>
+  <!-- Fart-linjer -->
+  <rect x="15" y="90" width="28" height="3" rx="1.5" fill="#FDFCF9" opacity="0.7"/>
+  <rect x="10" y="105" width="20" height="3" rx="1.5" fill="#FDFCF9" opacity="0.5"/>
+  <rect x="20" y="120" width="24" height="3" rx="1.5" fill="#FDFCF9" opacity="0.7"/>
+</svg>

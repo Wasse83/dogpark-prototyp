@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Luna, border collie">
+  <rect width="200" height="200" fill="#E8C5CB"/>
+  <!-- Border collie-huvud, framifrån -->
+  <!-- Svarta öronpartier bakom -->
+  <path d="M45 105 Q40 55 65 45 L85 80 Z" fill="#1A1714"/>
+  <path d="M155 105 Q160 55 135 45 L115 80 Z" fill="#1A1714"/>
+  <!-- Vitt ansikte -->
+  <ellipse cx="100" cy="115" rx="58" ry="62" fill="#FDFCF9"/>
+  <!-- Svarta sidor ovanför ögonen -->
+  <path d="M100 70 Q75 55 55 80 Q60 110 82 112 Q92 95 100 90 Z" fill="#1A1714"/>
+  <path d="M100 70 Q125 55 145 80 Q140 110 118 112 Q108 95 100 90 Z" fill="#1A1714"/>
+  <!-- Vit ansiktsstripe -->
+  <path d="M100 65 Q93 95 95 130 L105 130 Q107 95 100 65 Z" fill="#FDFCF9"/>
+  <!-- Ögon (brons-brun border collie-look) -->
+  <ellipse cx="82" cy="115" rx="7" ry="9" fill="#8B5A2B"/>
+  <circle cx="82" cy="115" r="3.5" fill="#1A1714"/>
+  <circle cx="83.5" cy="113" r="1.2" fill="#FDFCF9"/>
+  <ellipse cx="118" cy="115" rx="7" ry="9" fill="#8B5A2B"/>
+  <circle cx="118" cy="115" r="3.5" fill="#1A1714"/>
+  <circle cx="119.5" cy="113" r="1.2" fill="#FDFCF9"/>
+  <!-- Nos -->
+  <ellipse cx="100" cy="143" rx="10" ry="7" fill="#1A1714"/>
+  <!-- Mun -->
+  <path d="M100 150 Q95 158 88 156" stroke="#1A1714" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M100 150 Q105 158 112 156" stroke="#1A1714" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Tungspets -->
+  <ellipse cx="100" cy="162" rx="4" ry="6" fill="#C77B89"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Dogpark Västerås">
+  <rect width="200" height="200" fill="#F5F1E8"/>
+  <!-- Gräsmark -->
+  <rect y="135" width="200" height="65" fill="#8FA689"/>
+  <!-- Solnedgång -->
+  <circle cx="155" cy="130" r="38" fill="#E8C5CB"/>
+  <!-- Silhuett av byggnader -->
+  <rect x="20" y="110" width="30" height="25" fill="#3A342E"/>
+  <rect x="55" y="95" width="28" height="40" fill="#3A342E"/>
+  <polygon points="55,95 69,85 83,95" fill="#3A342E"/>
+  <!-- Skyltpelare "nyöppnad" -->
+  <rect x="98" y="105" width="4" height="30" fill="#3A342E"/>
+  <rect x="88" y="95" width="24" height="16" rx="2" fill="#A84F5E"/>
+  <circle cx="100" cy="103" r="2" fill="#FDFCF9"/>
+  <!-- Två hundar leker -->
+  <ellipse cx="130" cy="170" rx="12" ry="5" fill="#1A1714" opacity="0.3"/>
+  <ellipse cx="130" cy="165" rx="10" ry="7" fill="#1A1714"/>
+  <circle cx="138" cy="160" r="5" fill="#1A1714"/>
+  <ellipse cx="170" cy="170" rx="12" ry="5" fill="#1A1714" opacity="0.3"/>
+  <ellipse cx="170" cy="164" rx="9" ry="6" fill="#3F5A3D"/>
+  <circle cx="163" cy="159" r="5" fill="#3F5A3D"/>
+</svg>

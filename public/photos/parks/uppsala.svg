@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Dogpark Uppsala">
+  <rect width="200" height="200" fill="#C8D4C2"/>
+  <!-- Horisont -->
+  <rect y="130" width="200" height="70" fill="#8FA689"/>
+  <!-- Uppsala-siluett med domkyrkan -->
+  <rect x="30" y="95" width="25" height="35" fill="#3F5A3D" opacity="0.6"/>
+  <rect x="60" y="80" width="20" height="50" fill="#3F5A3D" opacity="0.6"/>
+  <!-- Domkyrkans torn -->
+  <rect x="90" y="55" width="10" height="75" fill="#A84F5E"/>
+  <rect x="102" y="55" width="10" height="75" fill="#A84F5E"/>
+  <path d="M90 55 L95 40 L100 55 Z" fill="#A84F5E"/>
+  <path d="M102 55 L107 40 L112 55 Z" fill="#A84F5E"/>
+  <rect x="120" y="75" width="18" height="55" fill="#3F5A3D" opacity="0.6"/>
+  <rect x="145" y="90" width="22" height="40" fill="#3F5A3D" opacity="0.6"/>
+  <!-- Hundbana -->
+  <path d="M10 170 Q60 150 100 170 T190 165" stroke="#FDFCF9" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="6 4"/>
+  <!-- Hund -->
+  <ellipse cx="100" cy="168" rx="10" ry="5" fill="#1A1714"/>
+  <circle cx="108" cy="162" r="5" fill="#1A1714"/>
+</svg>

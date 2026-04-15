@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Lydnad">
+  <rect width="200" height="200" fill="#8FA689"/>
+  <!-- Sittande hund i siluett -->
+  <ellipse cx="100" cy="170" rx="50" ry="18" fill="#3F5A3D"/>
+  <ellipse cx="85" cy="125" rx="35" ry="45" fill="#3F5A3D"/>
+  <ellipse cx="75" cy="85" rx="22" ry="26" fill="#3F5A3D"/>
+  <ellipse cx="63" cy="65" rx="7" ry="14" fill="#3F5A3D" transform="rotate(-20 63 65)"/>
+  <ellipse cx="88" cy="65" rx="7" ry="14" fill="#3F5A3D" transform="rotate(20 88 65)"/>
+  <circle cx="68" cy="88" r="2" fill="#FDFCF9"/>
+  <circle cx="83" cy="88" r="2" fill="#FDFCF9"/>
+  <!-- Handsignal -->
+  <circle cx="155" cy="75" r="14" fill="#FDFCF9"/>
+  <rect x="145" y="75" width="20" height="55" rx="8" fill="#FDFCF9"/>
+</svg>
