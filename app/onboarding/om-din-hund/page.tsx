@@ -43,7 +43,13 @@ export default function OnboardingStep2() {
         {/* Foto */}
         <div className="flex gap-3 items-center mb-[18px]">
           <button
-            className="w-16 h-16 rounded-[20px] flex items-center justify-center relative"
+            type="button"
+            onClick={() =>
+              alert(
+                "Fotouppladdning kommer i nästa version. Hoppa över så länge.",
+              )
+            }
+            className="w-16 h-16 rounded-[20px] flex items-center justify-center relative hover:opacity-90 transition-opacity"
             style={{
               background: "linear-gradient(135deg, #C8D4C2, #95A892)",
             }}

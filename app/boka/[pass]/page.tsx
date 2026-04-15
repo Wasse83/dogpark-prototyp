@@ -4,7 +4,6 @@ import { PhoneFrame } from "@/components/PhoneFrame";
 import { Icon } from "@/components/Icon";
 import {
   mockGroupSessions,
-  mockInstructors,
   getGroupSession,
   getInstructor,
 } from "@/lib/mock-data";
