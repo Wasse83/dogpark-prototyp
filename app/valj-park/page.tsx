@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { Icon } from "@/components/Icon";
+import { PhotoThumb } from "@/components/PhotoThumb";
 import { getParks } from "@/lib/mock-data";
 
 /**
  * /valj-park — välj hempark.
- * Enligt designsystem §5: kort-variant "surface", pill-taggar för zoner,
- * hero med andra raden i rose-italic. Voice: varm, inte teknisk.
+ * Designsystem v0.3 §14 Version C:
+ *  - display-md 24px hero
+ *  - 72×72 PhotoThumb (variant=park) till vänster i varje kort
+ *  - Kompakt metarad, zoner på en rad
  */
 export default async function ValjParkPage() {
   const parks = await getParks();
@@ -23,7 +26,7 @@ export default async function ValjParkPage() {
       <PhoneFrame>
         <div className="h-full overflow-y-auto px-5 pb-24">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4">
             <Link
               href="/"
               aria-label="Tillbaka"
@@ -37,71 +40,76 @@ export default async function ValjParkPage() {
             <div className="w-9" aria-hidden="true" />
           </div>
 
-          {/* Hero */}
-          <div className="mb-7">
-            <h1 className="font-display text-[28px] leading-[1.15]">
-              Vilken park blir
-              <br />
-              er <em className="text-rose-700 italic">hemma</em>?
+          {/* Hero — display-md 24px, Version C */}
+          <div className="mb-4">
+            <h1 className="font-display text-[24px] leading-[1.15]">
+              Vilken park blir er{" "}
+              <em className="text-rose-700 italic">hemma</em>?
             </h1>
-            <p className="text-sm text-text-muted mt-3">
-              Du kan byta när du vill. Medlemskapet funkar i alla parker.
+            <p className="text-[13px] text-text-muted mt-1">
+              {parks.length} parker · Du kan byta när du vill
             </p>
           </div>
 
           {/* Park-lista */}
-          <div className="stagger flex flex-col gap-3">
+          <div className="stagger flex flex-col gap-2">
             {parks.map((park) => (
               <Link
                 key={park.id}
                 href={`/bli-medlem?park=${park.id}`}
                 aria-label={`Välj ${park.name}`}
-                className="block bg-bg-surface rounded-[22px] p-4 border border-charcoal-900/[0.04] hover:border-sage-500/30 hover:shadow-md transition-all duration-200"
+                className="block bg-bg-surface rounded-[20px] p-3 border border-charcoal-900/[0.04] hover:border-sage-500/30 hover:shadow-md transition-all duration-200"
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-bold tracking-wider text-sage-800 uppercase mb-1">
-                      {park.city}
-                    </p>
-                    <h2 className="font-display text-[20px] leading-tight mb-1.5">
-                      {park.name}
-                    </h2>
-                    <p className="text-[13px] text-text-secondary mb-3">
-                      {park.tagline}
-                    </p>
+                  <div className="relative flex-shrink-0">
+                    <PhotoThumb
+                      src={park.photoUrl}
+                      alt={park.name}
+                      size={72}
+                      rounded="2xl"
+                      variant="park"
+                    />
+                    <span
+                      className="absolute bottom-1.5 left-1.5 bg-charcoal-900/80 text-bone-50 text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded-pill"
+                      aria-hidden="true"
+                    >
+                      {park.city.toUpperCase()}
+                    </span>
+                  </div>
 
-                    {/* Pills */}
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      <Pill>{park.sizeSqm.toLocaleString("sv-SE")} kvm</Pill>
-                      <Pill>Öppen {park.openedYear}</Pill>
-                      <Pill>
-                        {park.instructors} instruktör
-                        {park.instructors === 1 ? "" : "er"}
-                      </Pill>
+                  <div className="flex-1 min-w-0 pt-0.5">
+                    <div className="flex items-start justify-between gap-2 mb-0.5">
+                      <h2 className="font-semibold text-[14px] leading-tight truncate">
+                        {park.name}
+                      </h2>
+                      <Icon.ChevronRight
+                        size={16}
+                        className="text-text-muted flex-shrink-0 mt-0.5"
+                      />
                     </div>
-
-                    {/* Zoner */}
-                    <p className="text-[11px] text-text-muted">
+                    <p className="text-[12px] text-text-muted leading-snug truncate">
+                      {park.sizeSqm.toLocaleString("sv-SE")} kvm ·{" "}
+                      {park.instructors} instruktör
+                      {park.instructors === 1 ? "" : "er"} · Öppen{" "}
+                      {park.openedYear}
+                    </p>
+                    <p className="text-[11px] text-text-muted leading-snug mt-1 truncate">
                       {park.zones.slice(0, 3).join(" · ")}
                       {park.zones.length > 3
-                        ? ` och ${park.zones.length - 3} till`
+                        ? ` +${park.zones.length - 3}`
                         : ""}
                     </p>
                   </div>
-                  <Icon.ChevronRight
-                    size={18}
-                    className="text-text-muted mt-1 flex-shrink-0"
-                  />
                 </div>
               </Link>
             ))}
           </div>
 
           {/* Sekundär CTA */}
-          <div className="mt-6 text-center">
+          <div className="mt-5 text-center">
             <Link
               href="/"
-              className="text-sm text-text-muted hover:text-sage-600 transition-colors"
+              className="text-[13px] text-text-muted hover:text-sage-600 transition-colors"
             >
               Jag bestämmer senare
             </Link>
@@ -109,13 +117,5 @@ export default async function ValjParkPage() {
         </div>
       </PhoneFrame>
     </div>
-  );
-}
-
-function Pill({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center rounded-pill bg-sage-100 text-sage-800 text-[11px] font-semibold px-2.5 py-1">
-      {children}
-    </span>
   );
 }
