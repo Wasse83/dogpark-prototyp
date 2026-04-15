@@ -12,7 +12,7 @@ import { getProgramAlternatives, type Program } from "@/lib/mock-data";
  * Designsystem v0.3 §14 + §17 (carousel):
  *  - Vi visar rekommendationen först, men användaren kan swipea till 2 alternativ.
  *  - Inga priser här (onboarding handlar om innehåll, inte plånbok; pris kommer i /bli-medlem).
- *  - Version C-metrik: 26px hero, tätt kort-innehåll.
+ *  - Version C-metrik: 24px hero, tätt kort-innehåll.
  */
 
 export default function OnboardingStep3() {

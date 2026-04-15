@@ -134,7 +134,12 @@ För enhetlig ton listar vi den exakta hero-texten per sida:
 - `/onboarding/om-din-hund` — "Berätta om *Luna*"
 - `/onboarding/rekommendation` — "Vi tror Luna skulle gilla *detta*"
 
-Genomgående: kursiv-accent på det affektiva ordet, i sage-600.
+Genomgående: kursiv-accent på det affektiva ordet. **Färgval följer sage-vs-rose-regeln från v0.3:**
+
+- **sage-600** när ordet uttrycker en handling, ett innehåll eller ett system-begrepp ("veckans pass", "resa", "medlemskap", "val", "vaccinationer", "hemmaläxa", "rätt pass", "logga ut", "notiser", "detta", "Luna" i onboarding där hunden är objektet vi konfigurerar).
+- **rose-700** när ordet är mänskligt eller tidsmässigt — egen ägd tid, hemkänsla, förväntan på ett möte. Används idag på tre ställen: `/mina-bokningar` ("inbokade stunder"), `/valj-park` ("hemma"), och bokningsbekräftelsen `/boka/[pass]` ("vi ses {dayLabel}").
+
+Regeln är inte mekanisk — är det tveksamt, välj sage. Rose reserveras för när vi vill att läsaren ska känna varmt, inte bara förstå.
 
 ## Nya mock-data-typer
 

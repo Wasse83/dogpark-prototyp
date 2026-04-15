@@ -35,7 +35,7 @@ export default async function HomePage() {
           Dogpark medlemsapp
         </p>
         <p className="text-sm text-text-muted mt-1">
-          Klickbar prototyp v0.1, fejkdata
+          Klickbar prototyp v0.4, fejkdata
         </p>
       </div>
 
@@ -66,13 +66,16 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* Hero rubrik */}
-          <div className="mb-6">
-            <h1 className="font-display text-3xl leading-[1.1]">
-              Dags för
-              <br />
+          {/* Hero rubrik — Version C 24px */}
+          <div className="mb-5">
+            <h1 className="font-display text-[24px] leading-[1.15]">
+              Dags för{" "}
               <em className="text-sage-600 italic">{journey.programName}</em>
             </h1>
+            <p className="text-[13px] text-text-muted mt-1">
+              Pass {journey.currentSession} av {journey.totalSessions} på
+              nivå {journey.level}
+            </p>
           </div>
 
           {/* Min resa kort */}
