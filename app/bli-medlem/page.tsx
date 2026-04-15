@@ -61,20 +61,19 @@ function BliMedlemContent() {
           </div>
 
           {/* Hero */}
-          <div className="mb-5">
-            <h1 className="font-display text-[28px] leading-[1.15]">
-              Välj medlemskap
-              <br />
-              för <em className="text-rose-700 italic">Luna</em> och dig
+          <div className="mb-4">
+            <h1 className="font-display text-[24px] leading-[1.15]">
+              Välj medlemskap för{" "}
+              <em className="text-sage-600 italic">Luna</em>
             </h1>
             {selectedPark && (
-              <p className="text-sm text-text-muted mt-3">
-                På {selectedPark.name}. Du kan byta park när du vill.
+              <p className="text-[13px] text-text-muted mt-1">
+                På {selectedPark.name} · byt park när ni vill
               </p>
             )}
             {!selectedPark && (
-              <p className="text-sm text-text-muted mt-3">
-                Funkar i alla Dogparker, välj hempark senare.
+              <p className="text-[13px] text-text-muted mt-1">
+                Funkar i alla Dogparker · välj hempark senare
               </p>
             )}
           </div>
@@ -144,7 +143,7 @@ function BliMedlemContent() {
 
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-display text-[22px] leading-none mb-1">
+                      <p className="font-display text-[20px] leading-none mb-1">
                         {tier.name}
                       </p>
                       <p className="text-[12px] text-text-muted">
@@ -152,7 +151,7 @@ function BliMedlemContent() {
                       </p>
                     </div>
                     <div className="text-right flex-shrink-0 ml-3">
-                      <p className="font-display text-[20px] leading-none">
+                      <p className="font-display text-[18px] leading-none">
                         {price}
                       </p>
                       <p className="text-[10px] text-text-muted uppercase tracking-wider">

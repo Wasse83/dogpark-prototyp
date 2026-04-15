@@ -33,8 +33,8 @@ export default function OnboardingStep2() {
       </div>
 
       <div className="px-5 pt-6 flex-1 flex flex-col overflow-y-auto stagger">
-        <h1 className="font-display text-[26px] leading-[1.15] mb-1.5">
-          Berätta om Luna.
+        <h1 className="font-display text-[24px] leading-[1.15] mb-1.5">
+          Berätta om <em className="text-sage-600 italic">Luna</em>
         </h1>
         <p className="text-[13px] leading-relaxed text-text-muted mb-5">
           Det här hjälper oss matcha er med rätt pass. Allt kan ändras senare.
@@ -84,13 +84,23 @@ export default function OnboardingStep2() {
 
         {/* Ålder */}
         <div className="mb-3">
-          <label className="text-[11px] font-semibold tracking-wide text-text-muted block mb-1.5">
+          <p
+            id="age-label"
+            className="text-[11px] font-semibold tracking-wide text-text-muted block mb-1.5"
+          >
             ÅLDER
-          </label>
-          <div className="grid grid-cols-4 gap-1.5">
+          </p>
+          <div
+            className="grid grid-cols-4 gap-1.5"
+            role="radiogroup"
+            aria-labelledby="age-label"
+          >
             {(["valp", "ung", "vuxen", "senior"] as AgeGroup[]).map((opt) => (
               <button
                 key={opt}
+                type="button"
+                role="radio"
+                aria-checked={age === opt}
                 onClick={() => setAge(opt)}
                 className={`
                   py-2.5 rounded-xl text-xs text-center capitalize
@@ -109,10 +119,17 @@ export default function OnboardingStep2() {
 
         {/* Erfarenhet */}
         <div className="mb-4">
-          <label className="text-[11px] font-semibold tracking-wide text-text-muted block mb-1.5">
+          <p
+            id="exp-label"
+            className="text-[11px] font-semibold tracking-wide text-text-muted block mb-1.5"
+          >
             VAR VILL NI BÖRJA?
-          </label>
-          <div className="flex flex-col gap-1.5">
+          </p>
+          <div
+            className="flex flex-col gap-1.5"
+            role="radiogroup"
+            aria-labelledby="exp-label"
+          >
             {(
               [
                 ["nyborjare", "Vi är nybörjare, behöver grunderna"],
@@ -122,6 +139,9 @@ export default function OnboardingStep2() {
             ).map(([value, label]) => (
               <button
                 key={value}
+                type="button"
+                role="radio"
+                aria-checked={experience === value}
                 onClick={() => setExperience(value)}
                 className={`
                   p-3 rounded-xl flex items-center gap-2.5 text-left

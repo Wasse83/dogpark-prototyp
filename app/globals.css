@@ -99,3 +99,21 @@ html, body {
 :focus:not(:focus-visible) {
   outline: none;
 }
+
+/* Skip-link — dold tills den får fokus med Tab */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  z-index: 100;
+  background: var(--color-action-primary);
+  color: var(--color-text-on-inverse);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 8px;
+}

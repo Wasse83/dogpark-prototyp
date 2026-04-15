@@ -39,13 +39,11 @@ export default function OnboardingStep1() {
           </div>
         </div>
 
-        <h1 className="font-display text-[30px] leading-[1.15] mb-2">
-          Välkommen
-          <br />
-          till Dogpark.
+        <h1 className="font-display text-[24px] leading-[1.15] mb-2">
+          Välkommen till Dogpark.
         </h1>
 
-        <p className="text-sm leading-relaxed text-text-muted mb-7">
+        <p className="text-[13px] leading-relaxed text-text-muted mb-6">
           Vi börjar med det viktigaste, vad heter din nya bästis?
         </p>
 
