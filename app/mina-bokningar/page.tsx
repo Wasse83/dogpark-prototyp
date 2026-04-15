@@ -51,17 +51,15 @@ export default async function MinaBokningarPage() {
             </Link>
           </div>
 
-          {/* Hero */}
-          <div className="mb-5">
-            <h1 className="font-display text-[26px] leading-[1.15]">
-              Era
-              <br />
-              <em className="text-rose-700 italic">inbokade stunder</em>
+          {/* Hero — display-md 24px, Version C */}
+          <div className="mb-4">
+            <h1 className="font-display text-[24px] leading-[1.15]">
+              Era <em className="text-rose-700 italic">inbokade stunder</em>
             </h1>
-            <p className="text-sm text-text-muted mt-2">
+            <p className="text-[13px] text-text-muted mt-1">
               {upcoming.length === 0
                 ? "Inget inbokat just nu, dags att hitta något"
-                : `${upcoming.length} ${upcoming.length === 1 ? "pass" : "pass"} framöver`}
+                : `${upcoming.length} ${upcoming.length === 1 ? "pass" : "pass"} framöver · ${past.length} genomförda`}
             </p>
           </div>
 
@@ -69,11 +67,11 @@ export default async function MinaBokningarPage() {
           {upcoming.length === 0 ? (
             <EmptyUpcoming />
           ) : (
-            <section className="mb-7">
-              <p className="text-[11px] font-bold tracking-wider text-text-muted uppercase mb-2.5">
+            <section className="mb-6">
+              <p className="text-[11px] font-bold tracking-wider text-text-muted uppercase mb-2">
                 Kommande
               </p>
-              <div className="flex flex-col gap-2.5">
+              <div className="flex flex-col gap-2">
                 {upcoming.map((b) => (
                   <UpcomingCard key={b.id} booking={b} />
                 ))}
@@ -131,8 +129,8 @@ function UpcomingCard({
   else relative = `Om ${dayDiff} dagar`;
 
   return (
-    <div className="bg-bg-surface rounded-[20px] p-4 border border-charcoal-900/[0.04]">
-      <div className="flex items-start gap-3.5">
+    <div className="bg-bg-surface rounded-[20px] p-3 border border-charcoal-900/[0.04]">
+      <div className="flex items-start gap-3">
         <div className="w-14 h-14 rounded-2xl bg-sage-100 flex flex-col items-center justify-center flex-shrink-0">
           <span className="text-[10px] text-sage-800 font-bold tracking-wider">
             {weekday}
