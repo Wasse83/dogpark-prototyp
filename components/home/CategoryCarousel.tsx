@@ -7,18 +7,8 @@
  */
 
 import Link from "next/link";
-import type { CategoryCard, GroupSession } from "@/lib/mock-data";
-
-// Mappar kategori-id till en gradient-bakgrund som matchar SVG-illustrationen.
-// Används när kategori-SVG:n inte fyller hela kortet. CSS-vars enligt globals.css.
-const gradientByCategory: Record<GroupSession["category"], string> = {
-  nosework: "linear-gradient(160deg, var(--sage-400), var(--sage-800))",
-  lydnad: "linear-gradient(160deg, var(--charcoal-700), var(--charcoal-900))",
-  hundgym: "linear-gradient(160deg, var(--rose-500), var(--rose-700))",
-  fys: "linear-gradient(160deg, var(--sage-500), var(--charcoal-700))",
-  social: "linear-gradient(160deg, var(--rose-100), var(--rose-500))",
-  avslappning: "linear-gradient(160deg, var(--bone-200), var(--sage-400))",
-};
+import type { CategoryCard } from "@/lib/mock-data";
+import { gradientByCategory } from "@/lib/categories";
 
 export function CategoryCarousel({ cards }: { cards: CategoryCard[] }) {
   return (

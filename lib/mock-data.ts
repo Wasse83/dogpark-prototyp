@@ -1138,12 +1138,12 @@ export type CategoryCard = {
 };
 
 export const mockCategoryCards: CategoryCard[] = [
-  { id: "nosework", label: "Nosework", sessionsThisWeek: 4, href: "/sok?kategori=nosework" },
-  { id: "lydnad", label: "Lydnad", sessionsThisWeek: 7, href: "/sok?kategori=lydnad" },
-  { id: "hundgym", label: "Hundgym", sessionsThisWeek: 3, href: "/sok?kategori=hundgym" },
-  { id: "fys", label: "Fys", sessionsThisWeek: 5, href: "/sok?kategori=fys" },
-  { id: "social", label: "Social", sessionsThisWeek: 2, href: "/sok?kategori=social" },
-  { id: "avslappning", label: "Avslappning", sessionsThisWeek: 3, href: "/sok?kategori=avslappning" },
+  { id: "nosework", label: "Nosework", sessionsThisWeek: 4, href: "/kategori/nosework" },
+  { id: "lydnad", label: "Lydnad", sessionsThisWeek: 7, href: "/kategori/lydnad" },
+  { id: "hundgym", label: "Hundgym", sessionsThisWeek: 3, href: "/kategori/hundgym" },
+  { id: "fys", label: "Fys", sessionsThisWeek: 5, href: "/kategori/fys" },
+  { id: "social", label: "Social", sessionsThisWeek: 2, href: "/kategori/social" },
+  { id: "avslappning", label: "Avslappning", sessionsThisWeek: 3, href: "/kategori/avslappning" },
 ];
 
 export async function getCategoryCards(): Promise<CategoryCard[]> {
@@ -1169,4 +1169,253 @@ export const mockParkActivity: ParkActivity = {
 export async function getParkActivity(): Promise<ParkActivity> {
   await fakeDelay();
   return mockParkActivity;
+}
+
+// ---------- Kategori-detaljsida (v0.5.1) ----------
+// En sida per kategori på /kategori/[id]. Mönstret: kontextualisera först
+// (vad är det, bra för vem, hur går det till) och visa bokningsbara pass
+// direkt. Les Mills nya-användare-mönstret — appens användare är närmare
+// det än de vana frekventa användarna.
+
+export type CategoryStep = {
+  title: string;
+  description: string;
+};
+
+export type CategoryDetail = {
+  id: GroupSession["category"];
+  label: string;
+  // Hero-text. Lead-raden är statisk text, accenten blir italic beige på
+  // mörk hero-yta (undantaget från sage/rose-regeln, se design-system v0.5).
+  heroLead: string;
+  heroAccent: string;
+  subtitle: string;
+  // Huvudbeskrivning. Ett ord kan markeras med {em}...{em} för sage-accent
+  // på ljus yta (här återgår vi till v0.3-regeln).
+  about: string;
+  // Korta påståenden om vilka hundar som passar. Visas som sage-chips.
+  goodFor: string[];
+  // Tre numrerade steg om hur ett pass går till.
+  steps: CategoryStep[];
+};
+
+export const mockCategoryDetails: Record<
+  GroupSession["category"],
+  CategoryDetail
+> = {
+  nosework: {
+    id: "nosework",
+    label: "Nosework",
+    heroLead: "Bygg hundens",
+    heroAccent: "lukt-självförtroende",
+    subtitle: "Nosework · för nyfikna näsor i alla åldrar",
+    about:
+      "Nosework handlar om att låta hunden använda sitt starkaste sinne — {em}lukten{em} — för att hitta gömda saker. Det tröttar ut hunden mer än en lång promenad och bygger självförtroende hos osäkra hundar.",
+    goodFor: [
+      "Blir lätt uttråkad",
+      "Är lite osäker",
+      "Älskar att söka",
+      "Äldre hundar",
+    ],
+    steps: [
+      {
+        title: "Uppvärmning, 5 min",
+        description: "Lekfull introduktion, ni hälsar på de andra hundarna.",
+      },
+      {
+        title: "Söka-moment, 35 min",
+        description:
+          "Instruktören gömmer dofter, hunden söker på sin egen nivå.",
+      },
+      {
+        title: "Lugnt avslut, 5 min",
+        description: "Hunden varvar ner. Ni går hem trötta och nöjda.",
+      },
+    ],
+  },
+
+  lydnad: {
+    id: "lydnad",
+    label: "Lydnad",
+    heroLead: "Bygg er",
+    heroAccent: "dagliga kontakt",
+    subtitle: "Lydnad · kontakt mer än kommando",
+    about:
+      "Lydnad är inte om att hunden ska lyda på order — det handlar om att bygga {em}kontakt{em} så att hunden vill följa er när det räknas.",
+    goodFor: [
+      "Unga hundar",
+      "Drar i kopplet",
+      "Svårt vid distraktion",
+      "Nya hem",
+    ],
+    steps: [
+      {
+        title: "Kontakt-övningar, 10 min",
+        description: "Enkla övningar som belönar uppmärksamhet.",
+      },
+      {
+        title: "Momentträning, 30 min",
+        description:
+          "Sitt, ligg, gå fot — med distraktioner i olika lager.",
+      },
+      {
+        title: "Reflektion, 5 min",
+        description:
+          "Instruktören går igenom vad ni kan träna vidare på hemma.",
+      },
+    ],
+  },
+
+  hundgym: {
+    id: "hundgym",
+    label: "Hundgym",
+    heroLead: "Stärk hunden",
+    heroAccent: "från kärnan och ut",
+    subtitle: "Hundgym · fys för friska leder och stabila muskler",
+    about:
+      "Hundgym är som en PT-session för hunden. Balansbollar, trampoliner, uppstickare — {em}rörelser{em} som stärker kärnmuskler och leder.",
+    goodFor: [
+      "Äldre hundar",
+      "Under återhämtning",
+      "Tävlingshundar",
+      "Lite stel eller vinglig",
+    ],
+    steps: [
+      {
+        title: "Uppvärmning, 5 min",
+        description: "Lugn ledrörlighet så kroppen är redo.",
+      },
+      {
+        title: "Stationer, 35 min",
+        description:
+          "Tre stationer med olika redskap, instruktören byter var tionde minut.",
+      },
+      {
+        title: "Avslut, 5 min",
+        description: "Stretch och ro. Kroppen får landa.",
+      },
+    ],
+  },
+
+  fys: {
+    id: "fys",
+    label: "Fys",
+    heroLead: "Håll",
+    heroAccent: "kroppen stark",
+    subtitle: "Fys · kondition och rörlighet",
+    about:
+      "Pass där hunden får röra sig ordentligt — {em}tröttskön{em} träning. Bra för hundar med mycket energi och för att bygga grundkondition.",
+    goodFor: [
+      "Mycket energi",
+      "Unga hundar",
+      "Aktiva raser",
+      "Vill bygga kondition",
+    ],
+    steps: [
+      {
+        title: "Uppvärmning, 5 min",
+        description: "Kortare aktivering på plats innan vi drar igång.",
+      },
+      {
+        title: "Aktiviteter, 35 min",
+        description:
+          "Löpteknik, riktningsövningar och hindergång i varierande takt.",
+      },
+      {
+        title: "Nedvarvning, 5 min",
+        description: "Lugn avrundning med vatten och en stund ro.",
+      },
+    ],
+  },
+
+  social: {
+    id: "social",
+    label: "Social",
+    heroLead: "Låt hunden",
+    heroAccent: "hälsa tryggt",
+    subtitle: "Social · möten på hundens villkor",
+    about:
+      "Ett {em}lugnt{em} tillfälle för hunden att möta andra hundar med en instruktör som håller koll. Bra för både valpar och osäkra hundar.",
+    goodFor: [
+      "Osäker med andra",
+      "Valp som behöver lära sig",
+      "Reaktiv på koppel",
+      "Bytt hem nyligen",
+    ],
+    steps: [
+      {
+        title: "Eget utrymme, 5 min",
+        description: "Varje hund får landa i miljön innan möten börjar.",
+      },
+      {
+        title: "Möten, 30 min",
+        description:
+          "Små grupper, instruktören läser hundarnas signaler kontinuerligt.",
+      },
+      {
+        title: "Lugnt avslut, 10 min",
+        description: "Ni pratar igenom vad ni såg och hur hunden reagerade.",
+      },
+    ],
+  },
+
+  avslappning: {
+    id: "avslappning",
+    label: "Avslappning",
+    heroLead: "Ge hunden",
+    heroAccent: "lugn och närvaro",
+    subtitle: "Avslappning · passivitet och återhämtning",
+    about:
+      "Passivitetsträning, hundyoga och massage. Övningar som lär hunden att {em}vila{em} i sällskap — en underskattad förmåga.",
+    goodFor: [
+      "Stressad hund",
+      "Svårt att varva ner",
+      "Reagerar på ljud",
+      "Ni vill lära er massage",
+    ],
+    steps: [
+      {
+        title: "Landa, 10 min",
+        description: "Hunden får en egen matta och varva ner.",
+      },
+      {
+        title: "Övningar, 30 min",
+        description:
+          "Passivitet, lätt massage och enkla yogapositioner för ägaren.",
+      },
+      {
+        title: "Vila, 5 min",
+        description: "Hela rummet blir tyst en stund innan vi går hem.",
+      },
+    ],
+  },
+};
+
+export async function getCategoryDetail(
+  id: GroupSession["category"],
+): Promise<CategoryDetail> {
+  await fakeDelay();
+  return mockCategoryDetails[id];
+}
+
+// Hämtar kommande bokningsbara pass för en viss kategori, sorterade
+// efter starttid. Används på /kategori/[id] för "Nästa pass"-listan.
+export async function getUpcomingSessionsByCategory(
+  categoryId: GroupSession["category"],
+  limit = 5,
+): Promise<GroupSession[]> {
+  await fakeDelay();
+  const now = Date.now();
+  return mockGroupSessions
+    .filter(
+      (s) =>
+        s.category === categoryId &&
+        new Date(s.startsAt).getTime() > now &&
+        s.spotsLeft > 0,
+    )
+    .sort(
+      (a, b) =>
+        new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime(),
+    )
+    .slice(0, limit);
 }
