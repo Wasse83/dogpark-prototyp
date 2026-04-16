@@ -205,6 +205,10 @@ function Toggle({
   onChange: () => void;
   label: string;
 }) {
+  // Flex-positionering istället för absolute+translate. Håller tumen
+  // deterministiskt inuti spåret oavsett browser-defaults på
+  // button-padding eller static-position för absolute-barn utan left.
+  // Spårets px-[3px] garanterar att tumen aldrig vidrör spårets kant.
   return (
     <button
       type="button"
@@ -213,15 +217,15 @@ function Toggle({
       aria-checked={checked}
       aria-label={label}
       onClick={onChange}
-      className={`relative flex-shrink-0 w-10 h-6 rounded-full transition-colors ${
-        checked ? "bg-sage-500" : "bg-bone-200"
+      className={`flex-shrink-0 inline-flex items-center w-11 h-[26px] px-[3px] rounded-full transition-colors duration-200 ${
+        checked
+          ? "bg-sage-500 justify-end"
+          : "bg-bone-200 justify-start"
       }`}
     >
       <span
-        className={`absolute top-0.5 w-5 h-5 rounded-full bg-bone-50 shadow-sm transition-transform ${
-          checked ? "translate-x-[18px]" : "translate-x-0.5"
-        }`}
         aria-hidden="true"
+        className="block w-5 h-5 rounded-full bg-bone-50 shadow-[0_1px_2px_rgba(26,23,20,0.15)] transition-all"
       />
     </button>
   );
