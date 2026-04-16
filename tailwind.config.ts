@@ -111,6 +111,10 @@ const config: Config = {
           "0%, 100%": { opacity: "0.6", transform: "scale(1)" },
           "50%": { opacity: "1", transform: "scale(1.15)" },
         },
+        kenburns: {
+          "0%": { transform: "scale(1) translate(0,0)" },
+          "100%": { transform: "scale(1.1) translate(-2%, -1%)" },
+        },
       },
       animation: {
         "fade-up": "fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards",
@@ -118,6 +122,7 @@ const config: Config = {
         "progress-fill": "progressFill 1s cubic-bezier(0.22,1,0.36,1) 0.4s backwards",
         "cursor-blink": "cursorBlink 1s steps(2) infinite",
         "pulse-dot": "pulseDot 1.6s ease-in-out infinite",
+        kenburns: "kenburns 18s ease-in-out infinite alternate",
       },
     },
   },

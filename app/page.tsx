@@ -2,31 +2,85 @@ import Link from "next/link";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { Icon } from "@/components/Icon";
 import { BottomNav } from "@/components/BottomNav";
+import { HeroPhoto } from "@/components/home/HeroPhoto";
+import { WeekRhythm } from "@/components/home/WeekRhythm";
+import { MilestoneCard } from "@/components/home/MilestoneCard";
+import { BadgeStrip } from "@/components/home/BadgeStrip";
+import { InstructorTip } from "@/components/home/InstructorTip";
+import { CategoryCarousel } from "@/components/home/CategoryCarousel";
+import { CommunityStrip } from "@/components/home/CommunityStrip";
 import {
   getDog,
   getOwner,
-  getJourney,
   getNextSession,
+  getDogProfile,
+  getWeekRhythm,
+  getBadges,
+  getInstructorTip,
+  getCategoryCards,
+  getParkActivity,
 } from "@/lib/mock-data";
 
+/**
+ * Hemskärm v0.5 — bildled, åtta sektioner.
+ * Alla data-anrop parallellt. När Supabase kopplas in byts innehållet i
+ * getters'arna, inte UI-koden.
+ *
+ * v0.5-sektioner:
+ *  1. Topbar (avatar + hälsning + bell)
+ *  2. HeroPhoto — 4:5 foto-kort med ken-burns och CTA
+ *  3. WeekRhythm — sju dagar Mån-Sön
+ *  4. MilestoneCard — nästa milstolpe, mörkt signatur-kort
+ *  5. BadgeStrip — mästarbevis, horisontell scroll
+ *  6. InstructorTip — veckans 90-sek-läxa från instruktören
+ *  7. CategoryCarousel — passkategorier med bild
+ *  8. CommunityStrip — mjuk social proof
+ */
+
+// Prototyp-placeholder för Luna. På riktigt ersätts detta av användarens
+// egen uppladdning (Supabase Storage). Unsplash direct-URL tills dess.
+const LUNA_HERO_PHOTO =
+  "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=800&q=80&auto=format";
+
 export default async function HomePage() {
-  const [dog, owner, journey, nextSession] = await Promise.all([
+  const [
+    dog,
+    owner,
+    nextSession,
+    profile,
+    week,
+    badges,
+    tip,
+    categories,
+    activity,
+  ] = await Promise.all([
     getDog(),
     getOwner(),
-    getJourney(),
     getNextSession(),
+    getDogProfile(),
+    getWeekRhythm(),
+    getBadges(),
+    getInstructorTip(),
+    getCategoryCards(),
+    getParkActivity(),
   ]);
 
-  const sessionDate = new Date(nextSession.startsAt);
-  const weekday = sessionDate
-    .toLocaleDateString("sv-SE", { weekday: "short" })
-    .slice(0, 3)
-    .toUpperCase();
-  const day = sessionDate.getDate();
-  const time = sessionDate.toLocaleTimeString("sv-SE", {
+  // Hero: datum/tid till läsbar svensk rad.
+  const start = new Date(nextSession.startsAt);
+  const weekday = start.toLocaleDateString("sv-SE", { weekday: "long" });
+  const day = start.getDate();
+  const month = start.toLocaleDateString("sv-SE", { month: "long" });
+  const time = start.toLocaleTimeString("sv-SE", {
     hour: "2-digit",
     minute: "2-digit",
   });
+  const heroSubtitle = `${capitalize(weekday)} ${day} ${month} · ${time} · ${nextSession.parkName}`;
+
+  // Hero-accent: lowercase programnamnet för kursiv-accent.
+  const { titleLead, titleAccent } = splitProgramForHero(nextSession.programName);
+
+  // Kicker: pass + nivå
+  const kicker = `Pass ${nextSession.sessionNumber} av ${nextSession.totalInProgram} · Nivå ${nextSession.level}`;
 
   return (
     <div className="min-h-screen bg-bone-100 py-8 px-4 flex flex-col items-center gap-6">
@@ -35,14 +89,14 @@ export default async function HomePage() {
           Dogpark medlemsapp
         </p>
         <p className="text-sm text-text-muted mt-1">
-          Klickbar prototyp v0.4, fejkdata
+          Klickbar prototyp v0.5, fejkdata
         </p>
       </div>
 
       <PhoneFrame>
-        <div className="h-full overflow-y-auto px-5 pb-24 stagger">
-          {/* Top: avatar + greeting + bell */}
-          <div className="flex items-center justify-between mb-7">
+        <div className="h-full overflow-y-auto pb-24 stagger">
+          {/* 1. Topbar */}
+          <div className="flex items-center justify-between mb-4 px-5 pt-1">
             <div className="flex items-center gap-3">
               <div
                 className="w-11 h-11 rounded-full bg-rose-500 flex items-center justify-center text-bone-50 font-bold text-lg animate-breathe"
@@ -59,99 +113,121 @@ export default async function HomePage() {
             </div>
             <Link
               href="/notiser"
-              className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors"
+              className="w-9 h-9 rounded-full bg-bone-100 flex items-center justify-center hover:bg-bone-200 transition-colors relative"
               aria-label="Notiser"
             >
               <Icon.Bell size={16} />
+              <span
+                className="absolute top-2 right-2.5 w-[7px] h-[7px] rounded-full bg-rose-500 border-2 border-bone-50"
+                aria-hidden="true"
+              />
             </Link>
           </div>
 
-          {/* Hero rubrik — Version C 24px */}
-          <div className="mb-5">
-            <h1 className="font-display text-[24px] leading-[1.15]">
-              Dags för{" "}
-              <em className="text-sage-600 italic">{journey.programName}</em>
-            </h1>
-            <p className="text-[13px] text-text-muted mt-1">
-              Pass {journey.currentSession} av {journey.totalSessions} på
-              nivå {journey.level}
-            </p>
-          </div>
+          {/* 2. Hero photo */}
+          <HeroPhoto
+            photoUrl={LUNA_HERO_PHOTO}
+            photoAlt={`Foto av ${dog.name}`}
+            kicker={kicker}
+            titleLead={titleLead}
+            titleAccent={titleAccent}
+            subtitle={heroSubtitle}
+            ctaLabel="Se passet"
+            ctaHref="/mina-bokningar"
+          />
 
-          {/* Min resa kort */}
-          <Link href="/min-resa" className="block mb-4">
-            <div className="bg-charcoal-900 text-bone-50 rounded-[22px] p-[18px]">
-              <div className="flex justify-between items-center mb-3.5">
-                <span className="bg-charcoal-700 text-sage-500 text-[10px] font-bold tracking-wider px-[10px] py-1 rounded-pill">
-                  DIN RESA
-                </span>
-                <span className="text-[11px] text-text-on-inverse-muted">
-                  Nivå {journey.level} av {journey.totalLevels}
-                </span>
-              </div>
-              <p className="font-semibold text-base mb-1">
-                {journey.programName}, pass {journey.currentSession} av{" "}
-                {journey.totalSessions}
-              </p>
-              <p className="text-xs text-text-on-inverse-muted mb-3.5">
-                Snart är hela nivån klar, bra jobbat
-              </p>
-              <div className="h-2 bg-charcoal-700 rounded-pill overflow-hidden">
-                <div
-                  className="h-full bg-sage-500 rounded-pill origin-left animate-progress-fill"
-                  style={{ width: `${journey.progressPct}%` }}
-                />
-              </div>
+          {/* 3. Veckans rytm */}
+          <section className="mt-7 px-5">
+            <header className="flex items-baseline justify-between mb-3">
+              <h2 className="font-display text-[18px] tracking-tight">
+                Er <em className="italic text-sage-600">vecka</em>
+              </h2>
+              <Link
+                href="/mina-bokningar"
+                className="text-xs font-semibold text-sage-600"
+              >
+                Öppna kalender →
+              </Link>
+            </header>
+            <WeekRhythm days={week} />
+          </section>
+
+          {/* 4. Nästa milstolpe */}
+          <section className="mt-7 px-5">
+            <header className="flex items-baseline justify-between mb-3">
+              <h2 className="font-display text-[18px] tracking-tight">
+                Nästa <em className="italic text-sage-600">milstolpe</em>
+              </h2>
+            </header>
+            <MilestoneCard
+              chip="Er resa"
+              title={profile.nextMilestone.title}
+              description={profile.nextMilestone.description}
+              progressPct={profile.nextMilestone.progress}
+              leftFoot={`Pass ${nextSession.sessionNumber} av ${nextSession.totalInProgram}`}
+              rightFoot="Klart runt 6 maj"
+              href="/min-resa"
+            />
+          </section>
+
+          {/* 5. Mästarbevis */}
+          <section className="mt-7">
+            <header className="flex items-baseline justify-between mb-3 px-5">
+              <h2 className="font-display text-[18px] tracking-tight">
+                <em className="italic text-sage-600">Mästarbevis</em>
+              </h2>
+              <Link
+                href="/min-hund"
+                className="text-xs font-semibold text-sage-600"
+              >
+                Alla {badges.length} →
+              </Link>
+            </header>
+            <div className="px-5">
+              <BadgeStrip badges={badges} />
             </div>
-          </Link>
+          </section>
 
-          {/* Nästa pass */}
-          <Link href="/mina-bokningar" className="block mb-4">
-            <div className="bg-bg-surface rounded-[22px] p-4 flex gap-3.5 items-center border border-charcoal-900/[0.04]">
-              <div className="w-14 h-14 rounded-2xl bg-rose-100 flex flex-col items-center justify-center flex-shrink-0">
-                <span className="text-[10px] text-rose-700 font-bold tracking-wider">
-                  {weekday}
-                </span>
-                <span className="font-display text-[22px] leading-none">
-                  {day}
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm">
-                  {nextSession.programName}
-                </p>
-                <p className="text-xs text-text-muted mt-0.5">
-                  {time}, {nextSession.parkName}
-                </p>
-              </div>
-              <Icon.ChevronRight size={18} className="text-text-muted" />
+          {/* 6. Instruktörs-tips */}
+          <section className="mt-7 px-5">
+            <header className="flex items-baseline justify-between mb-3">
+              <h2 className="font-display text-[18px] tracking-tight">
+                Från <em className="italic text-rose-700">{tip.instructorName}</em>{" "}
+                denna vecka
+              </h2>
+            </header>
+            <InstructorTip tip={tip} />
+          </section>
+
+          {/* 7. Kategorier */}
+          <section className="mt-7">
+            <header className="flex items-baseline justify-between mb-3 px-5">
+              <h2 className="font-display text-[18px] tracking-tight">
+                Vad vill ni <em className="italic text-sage-600">prova</em>?
+              </h2>
+              <Link
+                href="/boka"
+                className="text-xs font-semibold text-sage-600"
+              >
+                Boka pass →
+              </Link>
+            </header>
+            <div className="px-5">
+              <CategoryCarousel cards={categories} />
             </div>
-          </Link>
+          </section>
 
-          {/* Snabbåtgärder */}
-          <div className="grid grid-cols-2 gap-3">
-            <Link href="/boka">
-              <div className="bg-bg-surface rounded-[18px] p-3.5 border border-charcoal-900/[0.04]">
-                <div className="w-8 h-8 rounded-[10px] bg-sage-100 flex items-center justify-center mb-2 text-sage-800">
-                  <Icon.Clock size={16} />
-                </div>
-                <p className="text-xs font-semibold">Boka pass</p>
-                <p className="text-[11px] text-text-muted">8 lediga tider</p>
-              </div>
-            </Link>
-            <Link href="/veckans-ovning">
-              <div className="bg-bg-surface rounded-[18px] p-3.5 border border-charcoal-900/[0.04]">
-                <div className="w-8 h-8 rounded-[10px] bg-rose-100 flex items-center justify-center mb-2 text-rose-700">
-                  <Icon.Play size={16} />
-                </div>
-                <p className="text-xs font-semibold">Veckans övning</p>
-                <p className="text-[11px] text-text-muted">90 sek video</p>
-              </div>
-            </Link>
-          </div>
+          {/* 8. Community-strip */}
+          <section className="mt-7 px-5">
+            <header className="flex items-baseline justify-between mb-3">
+              <h2 className="font-display text-[18px] tracking-tight">
+                I er <em className="italic text-rose-700">hemmapark</em>
+              </h2>
+            </header>
+            <CommunityStrip activity={activity} />
+          </section>
         </div>
 
-        {/* Bottennav */}
         <BottomNav />
       </PhoneFrame>
 
@@ -205,4 +281,23 @@ export default async function HomePage() {
       </div>
     </div>
   );
+}
+
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/**
+ * Splittrar programnamn till lead + accent för hero.
+ * "Nosework med Anna" → { lead: "Dags för", accent: "nosework med anna" }
+ * Enkel regel tills vi har dedikerade hero-fält per pass i datamodellen.
+ */
+function splitProgramForHero(programName: string): {
+  titleLead: string;
+  titleAccent: string;
+} {
+  return {
+    titleLead: "Dags för",
+    titleAccent: programName.toLowerCase(),
+  };
 }

@@ -1007,3 +1007,166 @@ export async function getVaccinations(): Promise<VaccinationRecord[]> {
   await fakeDelay();
   return mockVaccinations;
 }
+
+// ---------- Hemskärm v0.5: veckans rytm ----------
+// Sju dagar, måndag först. Ingen hård streak-räkning — viloprick istället.
+
+export type WeekDay = {
+  weekdayShort: string; // "Mån" ... "Sön"
+  dateLabel: string; // "14" (dagen i månaden)
+  status: "klar" | "idag" | "bokad" | "vila";
+  sessionNumber?: number; // används för "idag" och "bokad"
+};
+
+// Genereras mot en fast "idag" så demon är deterministisk över dygnsgränser.
+// currentSession/totalSessions matchar mockJourney för konsistens.
+function buildWeekRhythm(): WeekDay[] {
+  // Måndag index 0, söndag index 6. Idag = onsdag (index 2) i demon.
+  return [
+    { weekdayShort: "Mån", dateLabel: "14", status: "klar" },
+    { weekdayShort: "Tis", dateLabel: "15", status: "vila" },
+    { weekdayShort: "Ons", dateLabel: "16", status: "idag", sessionNumber: 5 },
+    { weekdayShort: "Tor", dateLabel: "17", status: "vila" },
+    { weekdayShort: "Fre", dateLabel: "18", status: "bokad", sessionNumber: 6 },
+    { weekdayShort: "Lör", dateLabel: "19", status: "vila" },
+    { weekdayShort: "Sön", dateLabel: "20", status: "vila" },
+  ];
+}
+
+export const mockWeekRhythm: WeekDay[] = buildWeekRhythm();
+
+export async function getWeekRhythm(): Promise<WeekDay[]> {
+  await fakeDelay();
+  return mockWeekRhythm;
+}
+
+// ---------- Hemskärm v0.5: mästarbevis (achievement badges) ----------
+
+export type Badge = {
+  id: string;
+  title: string;
+  subtitle: string; // datum eller "N pass kvar" / "Låst"
+  status: "earned" | "next" | "locked";
+  icon: "star" | "level" | "heart" | "paw" | "lock" | "compass";
+};
+
+export const mockBadges: Badge[] = [
+  {
+    id: "b-first",
+    title: "Första passet",
+    subtitle: "12 mars",
+    status: "earned",
+    icon: "star",
+  },
+  {
+    id: "b-level-1",
+    title: "Nivå 1 klar",
+    subtitle: "28 mars",
+    status: "earned",
+    icon: "level",
+  },
+  {
+    id: "b-5-rad",
+    title: "5 pass i rad",
+    subtitle: "2 april",
+    status: "earned",
+    icon: "heart",
+  },
+  {
+    id: "b-nose-master",
+    title: "Nosework-mästare",
+    subtitle: "3 pass kvar",
+    status: "next",
+    icon: "paw",
+  },
+  {
+    id: "b-level-3",
+    title: "Nivå 3",
+    subtitle: "Låst",
+    status: "locked",
+    icon: "lock",
+  },
+  {
+    id: "b-explorer",
+    title: "Parkutforskare",
+    subtitle: "Besök alla 3",
+    status: "locked",
+    icon: "compass",
+  },
+];
+
+export async function getBadges(): Promise<Badge[]> {
+  await fakeDelay();
+  return mockBadges;
+}
+
+// ---------- Hemskärm v0.5: instruktörstips ----------
+
+export type InstructorTip = {
+  id: string;
+  instructorId: string;
+  instructorName: string;
+  instructorPhotoUrl?: string;
+  kicker: string; // "90 sek hemmaläxa"
+  title: string; // "Så hjälper du Luna att landa efter passet"
+  description: string;
+  href: string; // oftast /veckans-ovning
+};
+
+export const mockInstructorTip: InstructorTip = {
+  id: "tip-16",
+  instructorId: "instr-2",
+  instructorName: "Mira",
+  kicker: "90 sek hemmaläxa",
+  title: "Så hjälper du Luna att landa efter passet",
+  description: "Mira visar en kort lugn-övning för hallen hemma.",
+  href: "/veckans-ovning",
+};
+
+export async function getInstructorTip(): Promise<InstructorTip> {
+  await fakeDelay();
+  return mockInstructorTip;
+}
+
+// ---------- Hemskärm v0.5: kategori-carousel ----------
+
+export type CategoryCard = {
+  id: GroupSession["category"];
+  label: string;
+  sessionsThisWeek: number;
+  href: string;
+};
+
+export const mockCategoryCards: CategoryCard[] = [
+  { id: "nosework", label: "Nosework", sessionsThisWeek: 4, href: "/sok?kategori=nosework" },
+  { id: "lydnad", label: "Lydnad", sessionsThisWeek: 7, href: "/sok?kategori=lydnad" },
+  { id: "hundgym", label: "Hundgym", sessionsThisWeek: 3, href: "/sok?kategori=hundgym" },
+  { id: "fys", label: "Fys", sessionsThisWeek: 5, href: "/sok?kategori=fys" },
+  { id: "social", label: "Social", sessionsThisWeek: 2, href: "/sok?kategori=social" },
+  { id: "avslappning", label: "Avslappning", sessionsThisWeek: 3, href: "/sok?kategori=avslappning" },
+];
+
+export async function getCategoryCards(): Promise<CategoryCard[]> {
+  await fakeDelay();
+  return mockCategoryCards;
+}
+
+// ---------- Hemskärm v0.5: community-strip ----------
+// Mjuk social proof — ingen leaderboard, bara antal hundar i hemmaparken denna vecka.
+
+export type ParkActivity = {
+  parkName: string;
+  dogsThisWeek: number;
+  note: string; // "Ni är en av dem"
+};
+
+export const mockParkActivity: ParkActivity = {
+  parkName: "Uppsala",
+  dogsThisWeek: 12,
+  note: "Ni är en av dem",
+};
+
+export async function getParkActivity(): Promise<ParkActivity> {
+  await fakeDelay();
+  return mockParkActivity;
+}
