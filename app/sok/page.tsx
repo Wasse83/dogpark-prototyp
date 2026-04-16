@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
@@ -10,6 +10,7 @@ import {
   mockGroupSessions,
   type GroupSession,
 } from "@/lib/mock-data";
+import { isCategoryId } from "@/lib/categories";
 
 /**
  * /sok — fritextsök över passen.
@@ -76,6 +77,18 @@ export default function SokPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("alla");
   const [level, setLevel] = useState<LevelFilter>("alla");
+
+  // Läs ?kategori=X från URL på klienten och pre-selecta filter-chippet.
+  // window.location används (istället för Next useSearchParams) så att
+  // statisk export inte kräver en Suspense-wrapper. Lite flash på första
+  // render är acceptabel på en sökvy.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const raw = new URLSearchParams(window.location.search).get("kategori");
+    if (raw && isCategoryId(raw)) {
+      setCategory(raw);
+    }
+  }, []);
 
   const results = useMemo(() => {
     return mockGroupSessions.filter((s) => {
